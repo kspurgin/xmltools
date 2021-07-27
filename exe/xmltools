@@ -2,7 +2,8 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
-require 'xmltools'
+#require 'xmltools'
 require 'xmltools/cli/commands'
 
+#Xmltools::CLI::Cli.start
 Dry::CLI.new(Xmltools::CLI::Commands).call
