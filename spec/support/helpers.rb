@@ -3,6 +3,11 @@
 module RSpec
   module Support
     module Helpers
+      def fixtures_dir
+        home = File.realpath(File.join(File.dirname(__FILE__), '..', '..'))
+        File.join(home, 'spec', 'support', 'fixtures') 
+      end
+      
       def capture_output
         require 'stringio'
         output = StringIO.new
