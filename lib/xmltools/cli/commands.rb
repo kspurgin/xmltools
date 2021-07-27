@@ -2,6 +2,8 @@
 require "bundler/setup"
 require "dry/cli"
 
+require 'xmltools'
+require 'xmltools/cli/commands/validate'
 require 'xmltools/cli/commands/version'
 
 module Xmltools
@@ -48,6 +50,7 @@ module Xmltools
         option :graceful, type: :boolean, default: true, desc: "Graceful stop"
 
         def call(**options)
+          binding.pry
           puts "stopped - graceful: #{options.fetch(:graceful)}"
         end
       end
@@ -85,15 +88,16 @@ module Xmltools
         end
       end
 
-      register "version", Version, aliases: ["v", "-v", "--version"]
-      register "echo",    Echo
-      register "start",   Start
-      register "stop",    Stop
-      register "exec",    Exec
+      register 'version', Version, aliases: ['v', '-v', '--version']
+      register 'validate', Validate
+      register 'echo',    Echo
+      register 'start',   Start
+      register 'stop',    Stop
+      register 'exec',    Exec
 
-      register "generate", aliases: ["g"] do |prefix|
-        prefix.register "config", Generate::Configuration
-        prefix.register "test",   Generate::Test
+      register 'generate', aliases: ['g'] do |prefix|
+        prefix.register 'config', Generate::Configuration
+        prefix.register 'test',   Generate::Test
       end
     end
   end

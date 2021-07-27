@@ -29,11 +29,13 @@ Gem::Specification.new do |spec|
   # rubocop:enable Style/ExpandPathArguments
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}){ |f| File.basename(f) }
-  #spec.executables << 'xmltools'
   spec.require_paths = ['lib']
 
   spec.add_dependency 'activesupport', '~> 6.1.4'
   spec.add_dependency 'dry-cli', '~> 0.6'
+  spec.add_dependency 'dry-configurable', '~> 0.11'
+  spec.add_dependency 'dry-files', '~> 0.1'
+  spec.add_dependency 'dry-validation', '~> 1.6'
   spec.add_dependency 'nokogiri', '~> 1.10.4'
   spec.add_dependency 'progressbar', '~> 1.10.1'
 
