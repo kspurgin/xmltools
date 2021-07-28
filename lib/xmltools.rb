@@ -22,9 +22,9 @@ module Xmltools
   setting :recursive, false, reader: true
 
   def self.setup(config_hash)
-    self.config.input_dir = config_hash[:input_dir] if config_hash.key?(:input_dir)
-    self.config.schema = config_hash[:schema] if config_hash.key?(:schema)
-    self.config.recursive = config_hash[:recursive] if config_hash.key?(:recursive)
+    config.input_dir = config_hash[:input_dir] if config_hash.key?(:input_dir)
+    config.schema = config_hash[:schema] if config_hash.key?(:schema)
+    config.recursive = config_hash[:recursive] if config_hash.key?(:recursive)
   end
 
   Dir.glob("#{__dir__}/**/*").sort.select{ |path| path.match?(/\.rb$/) }.each do |rbfile|
