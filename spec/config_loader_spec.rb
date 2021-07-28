@@ -6,7 +6,7 @@ RSpec.describe 'Xmltools::ConfigLoader' do
 
   let(:described_class){ Xmltools::ConfigLoader }
   context 'when config file is not found' do
-    let(:path){ File.join(fixtures_dir, 'configs', 'nonexistent_config.yml') }
+    let(:path){ files.join(fixtures_dir, 'configs', 'nonexistent_config.yml') }
     it 'outputs warning to STDOUT' do
       warning = /WARN -- : Config file does not exist at #{path}/
       expect{ described_class.new(path) }.to output(warning).to_stdout_from_any_process
@@ -14,7 +14,7 @@ RSpec.describe 'Xmltools::ConfigLoader' do
 
     it 'returns empty hash' do
       loader = described_class.new(path)
-      expect(loader.hash).to eq({})
+      expect(loader.instance_variable_get(:@hash)).to eq({})
     end
   end
 
@@ -28,7 +28,7 @@ RSpec.describe 'Xmltools::ConfigLoader' do
     end
 
     context 'initialized with path' do
-      let(:path){ File.join(fixtures_dir, 'configs', 'ok_config.yml') }
+      let(:path){ files.join(fixtures_dir, 'configs', 'ok_config.yml') }
       it 'returns given config path' do
         loader = described_class.new(path)
         expect(loader.path).to eq(path)
@@ -36,7 +36,48 @@ RSpec.describe 'Xmltools::ConfigLoader' do
     end
   end
 
-  describe '#hash' do
+  describe '#config' do
+    context 'bad YAML' do
+      before do
+        @config = files.join(fixtures_dir, 'configs', 'bad.yml')
+        files.write(@config, '*')
+      end
+      after{ files.delete(@config) }
+      let(:loader){ described_class.new(@config) }
+      it 'outputs warning to STDOUT' do
+        warning = /WARN -- : Invalid config file at #{@config}/
+        expect{ described_class.new(@config) }.to output(warning).to_stdout_from_any_process
+      end
+      it 'calls Config with empty hash' do
+        expect(loader.config.hash).to eq({})
+      end
+    end
+
+    context 'blank YAML file' do
+      before do
+        @config = files.join(fixtures_dir, 'configs', 'blank.yml')
+        files.touch(@config)
+      end
+      after{ files.delete(@config) }
+      let(:loader){ described_class.new(@config) }
+      it 'outputs warning to STDOUT' do
+        warning = /WARN -- : Empty config file at #{@config}/
+        expect{ described_class.new(@config) }.to output(warning).to_stdout_from_any_process
+      end
+      it 'calls Config with empty hash' do
+        expect(loader.config.hash).to eq({})
+      end
+    end
+
+    context 'ok YAML file' do
+      before do
+        @config = files.join(fixtures_dir, 'configs', 'ok_config.yml')
+      end
+      let(:loader){ described_class.new(@config) }
+      it 'calls Config with expected hash' do
+        expect(loader.config.hash.keys).to include(:input_dir)
+      end
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength

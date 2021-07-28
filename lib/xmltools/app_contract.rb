@@ -19,6 +19,8 @@ module Xmltools
     end
 
     register_macro(:valid_schema) do
+      next if value.empty?
+      
       begin
         schema_doc(value)
       rescue Xmltools::Xml::InvalidSchemaError

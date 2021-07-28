@@ -1,3 +1,0 @@
-defaults:
-  inputs: ~/data/islandora/mods/i7_mods
-  schema: ~/data/mods/mods-3-6.xsd

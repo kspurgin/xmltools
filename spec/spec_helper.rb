@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
-require 'support/helpers'
+require 'dry/configurable/test_interface'
 
+require 'support/helpers'
 require 'xmltools'
 
 RSpec.configure do |config|
@@ -15,4 +16,8 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+end
+
+module Xmltools
+  enable_test_interface
 end
