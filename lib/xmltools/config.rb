@@ -10,10 +10,15 @@ module Xmltools
   class Config
     include Xmltools::Loggable
     
-    attr_reader :hash
+    attr_reader :orig, :hash
     def initialize(hash = {})
-      @hash = hash
-      fixup_hash unless @hash.empty?
+      @orig = hash
+      fixup_hash unless @orig.empty?
+      if validation_result.success?
+        @hash = @orig
+        return
+      end
+      @hash = valid_config_data
     end
 
     def validation_result
@@ -22,18 +27,26 @@ module Xmltools
 
     private
 
+    def valid_config_data
+      hash = validation_result.values.data
+      validation_result.errors.to_h.keys.each do |key|
+        hash.delete(key)
+      end
+      hash
+    end
+    
     def fixup_hash
-      @hash = hash.transform_keys(&:to_sym)
-      @hash[:input_dir] = File.expand_path(@hash[:input_dir]) if @hash.key?(:input_dir)
-      @hash[:schema] = File.expand_path(@hash[:schema]) if @hash.key?(:input_dir)
+      @orig = @orig.transform_keys(&:to_sym)
+      @orig[:input_dir] = File.expand_path(@orig[:input_dir]) if @orig.key?(:input_dir)
+      @orig[:schema] = File.expand_path(@orig[:schema]) if @orig.key?(:input_dir)
     end
 
     def validate
       contract = ConfigContract.new
       contract.call(
-        input_dir: @hash.fetch(:input_dir, ''),
-        schema: @hash.fetch(:schema, ''),
-        recursive: @hash.fetch(:recursive, false)
+        input_dir: @orig.fetch(:input_dir, ''),
+        schema: @orig.fetch(:schema, ''),
+        recursive: @orig.fetch(:recursive, false)
       )
     end
   end

@@ -28,7 +28,7 @@ RSpec.describe 'Xmltools::ConfigLoader' do
     end
 
     context 'initialized with path' do
-      let(:path){ files.join(fixtures_dir, 'configs', 'ok_config.yml') }
+      let(:path){ config_file(ok_config) }
       it 'returns given config path' do
         loader = described_class.new(path)
         expect(loader.path).to eq(path)
@@ -70,10 +70,8 @@ RSpec.describe 'Xmltools::ConfigLoader' do
     end
 
     context 'ok YAML file' do
-      before do
-        @config = files.join(fixtures_dir, 'configs', 'ok_config.yml')
-      end
-      let(:loader){ described_class.new(@config) }
+      let(:config){ config_file(ok_config) }
+      let(:loader){ described_class.new(config) }
       it 'calls Config with expected hash' do
         expect(loader.config.hash.keys).to include(:input_dir)
       end

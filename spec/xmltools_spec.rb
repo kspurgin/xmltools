@@ -24,16 +24,18 @@ RSpec.describe Xmltools do
 
     context 'after given a config' do
       before do
-        Xmltools::ConfigLoader.new(files.join(fixtures_dir, 'configs', 'ok_config.yml'))
+        Xmltools::ConfigLoader.new(config_file(ok_config_recursive))
       end
-      it 'input_dir = blank' do
-        expect(Xmltools.input_dir).to eq('/Users/kristina/data/islandora/mods/i7_mods')
+      it 'input_dir = dir from config' do
+        cleaned = clean_test_path(Xmltools.input_dir)
+        expect(cleaned).to eq('/xmltools/spec/support/fixtures/xml')
       end
-      it 'schema = blank' do
-        expect(Xmltools.schema).to eq('/Users/kristina/data/mods/mods-3-6.xsd')
+      it 'schema = file from config' do
+        cleaned = clean_test_path(Xmltools.schema)
+        expect(cleaned).to eq('/xmltools/spec/support/fixtures/xsd/mods_schema.xsd')
       end
-      it 'recursive = false' do
-        expect(Xmltools.recursive).to be false
+      it 'recursive = value from file' do
+        expect(Xmltools.recursive).to be true
       end
     end
   end

@@ -33,6 +33,10 @@ module RSpec
         $stdout = original_stdout
       end
 
+      def clean_test_path(path)
+        path.sub(/^.*\/xmltools/, '/xmltools')
+      end
+
       def fixtures_dir
         home = File.realpath(File.join(File.dirname(__FILE__), '..', '..'))
         File.join(home, 'spec', 'support', 'fixtures') 
@@ -41,10 +45,27 @@ module RSpec
       def ok_config
         config = <<~CONFIG
         input_dir: #{files.join(fixtures_dir, 'xml')}
-        recursive_input_dir: false
+        recursive: false
         schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema.xsd')}
         CONFIG
         config
+      end
+
+      def ok_config_recursive
+        config = <<~CONFIG
+        input_dir: #{files.join(fixtures_dir, 'xml')}
+        recursive: true
+        schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema.xsd')}
+        CONFIG
+        config
+      end
+
+      def config_file(config)
+        path = files.join( fixtures_dir, 'configs', 'config.yml' )
+        return path if files.exist?(path) && files.read(path) == config
+
+        files.write(path, config)
+        path
       end
     end
   end
