@@ -15,22 +15,22 @@ module Xmltools
     def initialize(hash = {})
       @orig = hash
       fixup_hash unless @orig.empty?
-      if validation_result.success?
+      if validated.success?
         @hash = @orig
         return
       end
       @hash = valid_config_data
     end
 
-    def validation_result
-      @result ||= validate
-    end
-
     private
 
+    def validated
+      @validated ||= validate
+    end
+
     def valid_config_data
-      hash = validation_result.values.data
-      validation_result.errors.to_h.each_key do |key|
+      hash = validated.values.data
+      validated.errors.to_h.each_key do |key|
         hash.delete(key)
       end
       hash

@@ -43,35 +43,15 @@ RSpec.describe 'Xmltools::Config' do
     end
 
     context 'when partially invalid config' do
-      let(:configdata){
+      let(:configdata) do
         <<~CONFIG
           input_dir: #{files.join(fixtures_dir, 'xml')}
           recursive_input_dir: false
           schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema_invalid.xsd')}
         CONFIG
-      }
+      end
       it 'returns hash with only valid config keys' do
         expect(result.keys.sort).to eq(%i[input_dir recursive])
-      end
-    end
-  end
-
-  describe '#validation_result' do
-    let(:config){ described_class.new(confighash) }
-
-    context 'valid config' do
-      let(:confighash){ YAML.safe_load(ok_config) }
-      let(:result){ config.validation_result }
-      it 'is success' do
-        expect(result.success?).to be true
-      end
-    end
-
-    context 'blank config' do
-      let(:confighash){ {} }
-      let(:result){ config.validation_result }
-      it 'is success' do
-        expect(result.success?).to be true
       end
     end
   end

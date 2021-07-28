@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 # frozen_string_literal: true
 
 require 'bundler/setup'
@@ -54,7 +53,6 @@ module Xmltools
         option :graceful, type: :boolean, default: true, desc: 'Graceful stop'
 
         def call(**options)
-          binding.pry
           puts "stopped - graceful: #{options.fetch(:graceful)}"
         end
       end

@@ -34,7 +34,7 @@ module RSpec
       end
 
       def clean_test_path(path)
-        path.sub(/^.*\/xmltools/, '/xmltools')
+        path.sub(%r{^.*/xmltools}, '/xmltools')
       end
 
       def fixtures_dir

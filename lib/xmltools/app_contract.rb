@@ -36,7 +36,7 @@ module Xmltools
       errors = result.errors
       next unless errors.empty? || errors[key_name].empty?
 
-      if !dir_has_xml?(files.expand_path(value), recurse)
+      unless dir_has_xml?(files.expand_path(value), recurse)
         key.failure('directory contains no XML')
         next
       end
@@ -52,6 +52,7 @@ module Xmltools
       pathname = Pathname.new(path)
       xml = pathname.children(false).select{ |child| child.extname == '.xml' }
       return true unless xml.empty?
+
       false
     end
 
@@ -59,6 +60,7 @@ module Xmltools
       pathname = "#{path}/**/*"
       xml = Dir.glob(pathname).select{ |fn| File.extname(fn) == '.xml' }
       return true unless xml.empty?
+
       false
     end
 
