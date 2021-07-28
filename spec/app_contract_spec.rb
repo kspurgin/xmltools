@@ -7,7 +7,7 @@ RSpec.describe 'Xmltools::AppContract' do
   let(:described_class){ Xmltools::AppContract }
   let(:recurse) { false }
 
-  before{ @files = Dry::Files.new }
+#  before{ files = Dry::Files.new }
 
   describe 'existing_dir_or_file' do
     context 'when validating a directory' do
@@ -68,14 +68,14 @@ RSpec.describe 'Xmltools::AppContract' do
       end
 
       context 'with existing file' do
-        let(:fileval){ @files.join(fixtures_dir, 'xsd', 'mods_schema.xsd') }
+        let(:fileval){ files.join(fixtures_dir, 'xsd', 'mods_schema.xsd') }
         it 'is success' do
           expect(result.success?).to be true
         end
       end
 
       context 'with nonexistent file' do
-        let(:fileval){ @files.join(fixtures_dir, 'xsd', 'missing.xsd') }
+        let(:fileval){ files.join(fixtures_dir, 'xsd', 'missing.xsd') }
         it 'is failure' do
           expect(result.failure?).to be true
         end
@@ -94,7 +94,7 @@ RSpec.describe 'Xmltools::AppContract' do
         required(:recurse).value(:bool)
       end
 
-      rule(:dir, :recurse).validate(:xml_dir)
+      rule(:dir).validate(xml_dir: :recurse)
     end
     
     let(:contract){ XMLDirContract.new }
@@ -119,28 +119,28 @@ RSpec.describe 'Xmltools::AppContract' do
     
     context 'with existing path containing an XML file' do
       before do
-        @path = @files.join(fixtures_dir, 'a.xml')
-        @files.touch(@path)
+        @path = files.join(fixtures_dir, 'a.xml')
+        files.touch(@path)
       end
       let(:dirval){ fixtures_dir }
       it 'is success' do
         expect(result.success?).to be true
       end
-      after{ @files.delete(@path) }
+      after{ files.delete(@path) }
     end
 
     context 'with existing directory without XML' do
       before do
-        @path = @files.join(fixtures_dir, 'emptydir')
-        @files.mkdir(@path)
+        @path = files.join(fixtures_dir, 'emptydir')
+        files.mkdir(@path)
       end
-      after{ @files.delete_directory(@path) }
+      after{ files.delete_directory(@path) }
       let(:dirval){ @path }
 
       context 'when no child directories contain XML files' do
         before do
-          child_dir = @files.join(@path, 'childdir')
-          @files.mkdir(child_dir)
+          child_dir = files.join(@path, 'childdir')
+          files.mkdir(child_dir)
         end
         context 'when not recursive' do
           it 'is failure' do
@@ -164,9 +164,9 @@ RSpec.describe 'Xmltools::AppContract' do
 
       context 'when a child directory contain XML files' do
         before do
-          child_dir = @files.join(@path, 'childdir')
-          @files.mkdir(child_dir)
-          @files.touch(@files.join(child_dir, 'a.xml'))
+          child_dir = files.join(@path, 'childdir')
+          files.mkdir(child_dir)
+          files.touch(files.join(child_dir, 'a.xml'))
         end
         context 'when not recursive' do
           it 'is failure' do

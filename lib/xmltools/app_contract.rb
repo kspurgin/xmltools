@@ -16,16 +16,15 @@ module Xmltools
       key.failure("#{key_name} does not exist at #{values.data[key_name]}") unless files.exist?(path)
     end
 
-    register_macro(:xml_dir) do
-      vals = values.values
-      dir = vals[0]
-      recurse = vals[1]
+    register_macro(:xml_dir) do |macro:|
+      recurse = values[macro.args[0]]
 
       next if value.empty?
 
-      path = files.expand_path(dir)
+      errors = result.errors
+      next unless errors.empty? || errors[key_name].empty?
 
-      if !dir_has_xml?(path, recurse)
+      if !dir_has_xml?(files.expand_path(value), recurse)
         key.failure('directory contains no XML')
         next
       end

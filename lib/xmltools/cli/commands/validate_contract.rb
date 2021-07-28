@@ -19,10 +19,7 @@ module Xmltools
         rule(:input_dir).validate(:existing_dir_or_file)
         rule(:schema).validate(:existing_dir_or_file)
 
-        rule(:input_dir, :recursive).validate(:xml_dir) do
-          result if rule_error?(:input_dir)
-        end
-
+        rule(:input_dir).validate(xml_dir: :recursive)
       end
     end
   end

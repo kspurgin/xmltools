@@ -9,9 +9,6 @@ RSpec.describe 'Xmltools::CLI::Commands::ValidateContract' do
 
   # `existing_dir_or_file` and `xml_dir` rule macros are tested under
   #   `Xmltools::AppContract` 
-
-#  before{ @files = Dry::Files.new }
-
   describe '#call' do
     before do
       @filepath = files.join(fixtures_dir, 'xml', 'a.xml')
@@ -34,35 +31,12 @@ RSpec.describe 'Xmltools::CLI::Commands::ValidateContract' do
       it 'is failure' do
         expect(result.failure?).to be true
       end
-      xit 'has expected message' do
+      it 'has expected message' do
         messages = result.errors.messages.map(&:text)
         msg = "input_dir does not exist at #{dirval}"
         expect(messages).to eq([msg])
       end
     end
-    
-    # context 'with ex' do
-    #   let(:dirval){ '' }
-    #   it 'is success' do
-    #     expect(result.success?).to be true
-    #   end
-    # end
-
-    # context 'with existing directory' do
-    #   it 'is success' do
-    #     expect(result.success?).to be true
-    #   end
-    # end
-
-    # context 'with nonexistent directory' do
-    #   let(:dirval){ '/a/b/c/d/e' }
-    #   it 'is failure' do
-    #     expect(result.failure?).to be true
-    #   end
-    #   it 'has expected message' do
-    #     expect(result.errors.messages.first.text).to eq('directory does not exist')
-    #   end
-    # end
   end
 end
 # rubocop:enable Metrics/BlockLength
