@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dry/files'
-
 module RSpec
   module Support
     module Helpers

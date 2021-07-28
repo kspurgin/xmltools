@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'pathname'
-require 'dry/files'
 require 'dry-validation'
 
 require 'xmltools'

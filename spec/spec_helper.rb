@@ -3,8 +3,6 @@
 require 'bundler/setup'
 require 'support/helpers'
 
-require 'dry/files'
-
 require 'xmltools'
 
 RSpec.configure do |config|
