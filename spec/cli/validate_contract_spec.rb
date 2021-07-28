@@ -37,6 +37,18 @@ RSpec.describe 'Xmltools::CLI::Commands::ValidateContract' do
         expect(messages).to eq([msg])
       end
     end
+
+    context 'with invalid schema' do
+    let(:schemaval){ files.join(fixtures_dir, 'xsd', 'mods_schema_invalid.xsd') }
+      it 'is failure' do
+        expect(result.failure?).to be true
+      end
+      it 'has expected message' do
+        messages = result.errors.messages.map(&:text)
+        msg = "invalid schema at #{schemaval}"
+        expect(messages).to eq([msg])
+      end
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength
