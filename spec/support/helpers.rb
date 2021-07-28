@@ -61,7 +61,7 @@ module RSpec
       end
 
       def config_file(config)
-        path = files.join( fixtures_dir, 'configs', 'config.yml' )
+        path = files.join(fixtures_dir, 'configs', 'config.yml')
         return path if files.exist?(path) && files.read(path) == config
 
         files.write(path, config)

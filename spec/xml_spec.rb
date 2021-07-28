@@ -26,4 +26,3 @@ RSpec.describe 'Xmltools::XML' do
     end
   end
 end
-

@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Xmltools do
   it 'has a version number' do
     expect(Xmltools::VERSION).not_to be nil
@@ -40,3 +41,4 @@ RSpec.describe Xmltools do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
