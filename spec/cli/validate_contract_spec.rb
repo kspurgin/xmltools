@@ -7,7 +7,7 @@ RSpec.describe 'Xmltools::CLI::Commands::ValidateContract' do
   let(:described_class){ Xmltools::CLI::Commands::ValidateContract }
   let(:recurse) { false }
 
-  # `existing_dir_or_file` and `xml_dir` rule macros are tested under
+  # `existing_dir_or_file`, `xml_dir`, and `valid_schema` rule macros are tested under
   #   `Xmltools::AppContract` 
   describe '#call' do
     before do
@@ -34,18 +34,6 @@ RSpec.describe 'Xmltools::CLI::Commands::ValidateContract' do
       it 'has expected message' do
         messages = result.errors.messages.map(&:text)
         msg = "input_dir does not exist at #{dirval}"
-        expect(messages).to eq([msg])
-      end
-    end
-
-    context 'with invalid schema' do
-    let(:schemaval){ files.join(fixtures_dir, 'xsd', 'mods_schema_invalid.xsd') }
-      it 'is failure' do
-        expect(result.failure?).to be true
-      end
-      it 'has expected message' do
-        messages = result.errors.messages.map(&:text)
-        msg = "invalid schema at #{schemaval}"
         expect(messages).to eq([msg])
       end
     end

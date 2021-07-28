@@ -4,15 +4,26 @@ require 'pathname'
 require 'dry-validation'
 
 require 'xmltools'
+require 'xmltools/xml'
 
 module Xmltools
   # Common validation macros shared across the application
   class AppContract < Dry::Validation::Contract
+    include Xml
+    
     register_macro(:existing_dir_or_file) do
       next if value.empty?
 
       path = files.expand_path(value)
       key.failure("#{key_name} does not exist at #{values.data[key_name]}") unless files.exist?(path)
+    end
+
+    register_macro(:valid_schema) do
+      begin
+        schema_doc(value)
+      rescue Xmltools::Xml::InvalidSchemaError
+        key.failure("invalid schema at #{value}")
+      end
     end
 
     register_macro(:xml_dir) do |macro:|

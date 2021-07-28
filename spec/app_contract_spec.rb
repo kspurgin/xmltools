@@ -7,7 +7,7 @@ RSpec.describe 'Xmltools::AppContract' do
   let(:described_class){ Xmltools::AppContract }
   let(:recurse) { false }
 
-#  before{ files = Dry::Files.new }
+  #  before{ files = Dry::Files.new }
 
   describe 'existing_dir_or_file' do
     context 'when validating a directory' do
@@ -87,6 +87,38 @@ RSpec.describe 'Xmltools::AppContract' do
     end
   end
 
+  describe 'valid_schema' do
+    class SchemaContract < Xmltools::AppContract
+      schema do
+        required(:path).value(:string)
+      end
+
+      rule(:path).validate(:valid_schema)
+    end
+
+    let(:contract){ SchemaContract.new }
+    let(:result){ contract.call(path: schemaval) }
+
+    context 'with valid schema' do
+      let(:schemaval){ files.join(fixtures_dir, 'xsd', 'mods_schema.xsd') }
+      it 'is success' do
+        expect(result.failure?).to be false
+      end
+    end
+
+    context 'with invalid schema' do
+      let(:schemaval){ files.join(fixtures_dir, 'xsd', 'mods_schema_invalid.xsd') }
+      it 'is failure' do
+        expect(result.failure?).to be true
+      end
+      it 'has expected message' do
+        messages = result.errors.messages.map(&:text)
+        msg = "invalid schema at #{schemaval}"
+        expect(messages).to eq([msg])
+      end
+    end
+  end
+  
   describe 'xml_dir' do
     class XMLDirContract < Xmltools::AppContract
       schema do

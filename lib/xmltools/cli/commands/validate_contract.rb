@@ -4,14 +4,13 @@ require 'dry-validation'
 
 require 'xmltools'
 require 'xmltools/app_contract'
-require 'xmltools/xml'
 
 module Xmltools
   module CLI
     module Commands
       # Validations for Validate CLI command
       class ValidateContract < AppContract
-        include Xml
+
         schema do
           optional(:input_dir).value(:string)
           optional(:schema).value(:string)
@@ -22,13 +21,7 @@ module Xmltools
         rule(:input_dir).validate(xml_dir: :recursive)
 
         rule(:schema).validate(:existing_dir_or_file)
-        rule(:schema) do
-          begin
-            schema_doc(value)
-          rescue Xmltools::Xml::InvalidSchemaError
-            key.failure("invalid schema at #{value}")
-          end
-        end
+        rule(:schema).validate(:valid_schema)
       end
     end
   end
