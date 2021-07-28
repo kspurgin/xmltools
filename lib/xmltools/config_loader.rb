@@ -49,7 +49,7 @@ module Xmltools
       end
 
       begin
-        result = YAML.load(yaml)
+        result = YAML.safe_load(yaml)
       rescue Psych::SyntaxError => e
         logger.warn("Invalid config file at #{path}. Cannot parse the YAML because: #{e.message}")
       else

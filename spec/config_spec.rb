@@ -32,7 +32,7 @@ RSpec.describe 'Xmltools::Config' do
   end
 
   describe '#hash' do
-    let(:confighash){ YAML.load(configdata) }
+    let(:confighash){ YAML.safe_load(configdata) }
     let(:config){ described_class.new(confighash) }
     let(:result){ config.hash }
     context 'when valid config' do
@@ -60,7 +60,7 @@ RSpec.describe 'Xmltools::Config' do
     let(:config){ described_class.new(confighash) }
 
     context 'valid config' do
-      let(:confighash){ YAML.load(ok_config) }
+      let(:confighash){ YAML.safe_load(ok_config) }
       let(:result){ config.validation_result }
       it 'is success' do
         expect(result.success?).to be true
