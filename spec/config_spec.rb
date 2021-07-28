@@ -41,13 +41,13 @@ RSpec.describe 'Xmltools::Config' do
         expect(result.keys.sort).to eq(%i[input_dir recursive schema])
       end
     end
-    
+
     context 'when partially invalid config' do
       let(:configdata){
       <<~CONFIG
-      input_dir: #{files.join(fixtures_dir, 'xml')}
-      recursive_input_dir: false
-      schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema_invalid.xsd')}
+        input_dir: #{files.join(fixtures_dir, 'xml')}
+        recursive_input_dir: false
+        schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema_invalid.xsd')}
       CONFIG
       }
       it 'returns hash with only valid config keys' do
@@ -74,7 +74,7 @@ RSpec.describe 'Xmltools::Config' do
         expect(result.success?).to be true
       end
     end
-    
+
   end
 end
 # rubocop:enable Metrics/BlockLength

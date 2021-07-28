@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'nokogiri'
 require 'xmltools'
 
@@ -5,11 +7,11 @@ module Xmltools
   # Mixin methods for working with XML
   module Xml
     class InvalidSchemaError < StandardError; end
-    
+
     def xml_files
       @xml_files ||= Dry::Files.new
     end
-    
+
     def schema_doc(path)
       begin
         Nokogiri::XML::Schema(xml_files.read(path))

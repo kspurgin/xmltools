@@ -10,7 +10,6 @@ module Xmltools
     module Commands
       # Validations for Validate CLI command
       class ValidateContract < AppContract
-
         schema do
           optional(:input_dir).value(:string)
           optional(:schema).value(:string)

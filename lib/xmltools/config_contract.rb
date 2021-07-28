@@ -8,7 +8,6 @@ require 'xmltools/app_contract'
 module Xmltools
   # Validations for Validate CLI command
   class ConfigContract < AppContract
-
     schema do
       optional(:input_dir).value(:string)
       optional(:schema).value(:string)

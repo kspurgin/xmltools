@@ -9,7 +9,7 @@ module Xmltools
   # passed in as an argument to the CLI
   class Config
     include Xmltools::Loggable
-    
+
     attr_reader :orig, :hash
     def initialize(hash = {})
       @orig = hash
@@ -34,7 +34,7 @@ module Xmltools
       end
       hash
     end
-    
+
     def fixup_hash
       @orig = @orig.transform_keys(&:to_sym)
       @orig[:input_dir] = File.expand_path(@orig[:input_dir]) if @orig.key?(:input_dir)

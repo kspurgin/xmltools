@@ -5,10 +5,10 @@ require 'spec_helper'
 # rubocop:disable Metrics/BlockLength
 RSpec.describe 'Xmltools::CLI::Commands::ValidateContract' do
   let(:described_class){ Xmltools::CLI::Commands::ValidateContract }
-  let(:recurse) { false }
+  let(:recurse){ false }
 
   # `existing_dir_or_file`, `xml_dir`, and `valid_schema` rule macros are tested under
-  #   `Xmltools::AppContract` 
+  #   `Xmltools::AppContract`
   describe '#call' do
     let(:contract){ described_class.new }
     let(:dirval){ files.join(fixtures_dir, 'xml') }

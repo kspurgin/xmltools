@@ -26,8 +26,8 @@ module Xmltools
     self.config.schema = config_hash[:schema] if config_hash.key?(:schema)
     self.config.recursive = config_hash[:recursive] if config_hash.key?(:recursive)
   end
-  
+
   Dir.glob("#{__dir__}/**/*").sort.select{ |path| path.match?(/\.rb$/) }.each do |rbfile|
     require rbfile.delete_prefix("#{File.expand_path(__dir__)}/lib/")
-  end  
+  end
 end

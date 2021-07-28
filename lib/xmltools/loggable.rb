@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require 'logger'
 
 module Xmltools
+  # Mixin module enabling a single Logger instance for the application
   module Loggable
     # Mixin method to write to logger
     def logger

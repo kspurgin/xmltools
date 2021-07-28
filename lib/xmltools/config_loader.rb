@@ -11,9 +11,9 @@ module Xmltools
   # passed in as an argument to the CLI, and creating a config object from it
   class ConfigLoader
     include Xmltools::Loggable
-    
+
     class FileUnparseableError < StandardError; end
-    
+
     DOTFILE = '.xmltools.yml'
     XMLTOOLS_HOME = File.realpath(File.join(File.dirname(__FILE__), '..', '..'))
     DEFAULT_FILE = File.join(XMLTOOLS_HOME, DOTFILE)

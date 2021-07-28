@@ -2,23 +2,48 @@
 
 require 'spec_helper'
 
+class DirContract < Xmltools::AppContract
+  schema do
+    required(:dir).value(:string)
+  end
+
+  rule(:dir).validate(:existing_dir_or_file)
+end
+
+class FileContract < Xmltools::AppContract
+  schema do
+    required(:file).value(:string)
+  end
+
+  rule(:file).validate(:existing_dir_or_file)
+end
+
+class SchemaContract < Xmltools::AppContract
+  schema do
+    required(:path).value(:string)
+  end
+
+  rule(:path).validate(:valid_schema)
+end
+
+class XMLDirContract < Xmltools::AppContract
+  schema do
+    required(:dir).value(:string)
+    required(:recurse).value(:bool)
+  end
+
+  rule(:dir).validate(xml_dir: :recurse)
+end
+
 # rubocop:disable Metrics/BlockLength
 RSpec.describe 'Xmltools::AppContract' do
   let(:described_class){ Xmltools::AppContract }
-  let(:recurse) { false }
+  let(:recurse){ false }
 
   #  before{ files = Dry::Files.new }
 
   describe 'existing_dir_or_file' do
     context 'when validating a directory' do
-      class DirContract < Xmltools::AppContract
-        schema do
-          required(:dir).value(:string)
-        end
-
-        rule(:dir).validate(:existing_dir_or_file)
-      end
-      
       let(:contract){ DirContract.new }
       let(:result){ contract.call(dir: dirval) }
 
@@ -49,14 +74,6 @@ RSpec.describe 'Xmltools::AppContract' do
     end
 
     context 'when validating a file' do
-      class FileContract < Xmltools::AppContract
-        schema do
-          required(:file).value(:string)
-        end
-
-        rule(:file).validate(:existing_dir_or_file)
-      end
-      
       let(:contract){ FileContract.new }
       let(:result){ contract.call(file: fileval) }
 
@@ -88,13 +105,7 @@ RSpec.describe 'Xmltools::AppContract' do
   end
 
   describe 'valid_schema' do
-    class SchemaContract < Xmltools::AppContract
-      schema do
-        required(:path).value(:string)
-      end
 
-      rule(:path).validate(:valid_schema)
-    end
 
     let(:contract){ SchemaContract.new }
     let(:result){ contract.call(path: schemaval) }
@@ -118,20 +129,11 @@ RSpec.describe 'Xmltools::AppContract' do
       end
     end
   end
-  
-  describe 'xml_dir' do
-    class XMLDirContract < Xmltools::AppContract
-      schema do
-        required(:dir).value(:string)
-        required(:recurse).value(:bool)
-      end
 
-      rule(:dir).validate(xml_dir: :recurse)
-    end
-    
+  describe 'xml_dir' do
     let(:contract){ XMLDirContract.new }
     let(:result){ contract.call(dir: dirval, recurse: recurse) }
-    
+
     context 'with empty string' do
       let(:dirval){ '' }
       it 'is success' do
@@ -148,7 +150,7 @@ RSpec.describe 'Xmltools::AppContract' do
       #   expect(result.failure?).to be true
       # end
     end
-    
+
     context 'with existing path containing an XML file' do
       before do
         @path = files.join(fixtures_dir, 'a.xml')

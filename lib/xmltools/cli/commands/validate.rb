@@ -6,7 +6,7 @@ module Xmltools
   module CLI
     module Commands
       # Command to validate XML files in a directory
-      class Validate < Dry::CLI::Command        
+      class Validate < Dry::CLI::Command
         desc 'Validate XML files in a directory'
         option :input_dir, type: :string, default: '', desc: 'Path to the directory containing the XML to validate'
         option :schema, type: :string, default: '', desc: 'Path to the schema to use for validation'
@@ -25,7 +25,6 @@ module Xmltools
         end
 
         private
-
       end
     end
   end

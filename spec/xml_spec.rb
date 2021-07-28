@@ -2,14 +2,13 @@
 
 require 'spec_helper'
 
-# rubocop:disable Metrics/BlockLength
-RSpec.describe 'Xmltools::XML' do
-  class TestClass
-    include Xmltools::Xml
-  end
+class TestClass
+  include Xmltools::Xml
+end
 
+RSpec.describe 'Xmltools::XML' do
   let(:instance){ TestClass.new }
-  
+
   describe '#schema_doc' do
     let(:schemapath){ files.join(fixtures_dir, 'xsd', 'mods_schema.xsd') }
 
@@ -22,9 +21,9 @@ RSpec.describe 'Xmltools::XML' do
     context 'with invalid schema' do
       let(:schemapath){ files.join(fixtures_dir, 'xsd', 'mods_schema_invalid.xsd') }
       it 'raises Xmltools::Xml::InvalidSchemaError' do
-        expect{instance.schema_doc(schemapath)}.to raise_error(Xmltools::Xml::InvalidSchemaError)
+        expect{ instance.schema_doc(schemapath) }.to raise_error(Xmltools::Xml::InvalidSchemaError)
       end
     end
+  end
 end
-end
-# rubocop:enable Metrics/BlockLength
+

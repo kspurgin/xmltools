@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
-require "bundler/setup"
-require "dry/cli"
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'dry/cli'
 
 require 'xmltools'
 require 'xmltools/cli/commands/validate'
@@ -8,13 +10,15 @@ require 'xmltools/cli/commands/version'
 
 module Xmltools
   module CLI
+    # Registry of commands for CLI
     module Commands
       extend Dry::CLI::Registry
 
+      # rubocop:disable Style/Documentation
       class Echo < Dry::CLI::Command
-        desc "Print input"
+        desc 'Print input'
 
-        argument :input, desc: "Input to print"
+        argument :input, desc: 'Input to print'
 
         example [
           "             # Prints 'wuh?'",
@@ -23,7 +27,7 @@ module Xmltools
 
         def call(input: nil, **)
           if input.nil?
-            puts "wuh?"
+            puts 'wuh?'
           else
             puts input
           end
@@ -31,12 +35,12 @@ module Xmltools
       end
 
       class Start < Dry::CLI::Command
-        desc "Start Foo machinery"
+        desc 'Start Foo machinery'
 
-        argument :root, required: true, desc: "Root directory"
+        argument :root, required: true, desc: 'Root directory'
 
         example [
-          "path/to/root # Start Foo at root directory"
+          'path/to/root # Start Foo at root directory'
         ]
 
         def call(root:, **)
@@ -45,9 +49,9 @@ module Xmltools
       end
 
       class Stop < Dry::CLI::Command
-        desc "Stop Foo machinery"
+        desc 'Stop Foo machinery'
 
-        option :graceful, type: :boolean, default: true, desc: "Graceful stop"
+        option :graceful, type: :boolean, default: true, desc: 'Graceful stop'
 
         def call(**options)
           binding.pry
@@ -56,10 +60,10 @@ module Xmltools
       end
 
       class Exec < Dry::CLI::Command
-        desc "Execute a task"
+        desc 'Execute a task'
 
-        argument :task, type: :string, required: true,  desc: "Task to be executed"
-        argument :dirs, type: :array,  required: false, desc: "Optional directories"
+        argument :task, type: :string, required: true,  desc: 'Task to be executed'
+        argument :dirs, type: :array,  required: false, desc: 'Optional directories'
 
         def call(task:, dirs: [], **)
           puts "exec - task: #{task}, dirs: #{dirs.inspect}"
@@ -68,9 +72,9 @@ module Xmltools
 
       module Generate
         class Configuration < Dry::CLI::Command
-          desc "Generate configuration"
+          desc 'Generate configuration'
 
-          option :apps, type: :array, default: [], desc: "Generate configuration for specific apps"
+          option :apps, type: :array, default: [], desc: 'Generate configuration for specific apps'
 
           def call(apps:, **)
             puts "generated configuration for apps: #{apps.inspect}"
@@ -78,14 +82,15 @@ module Xmltools
         end
 
         class Test < Dry::CLI::Command
-          desc "Generate tests"
+          desc 'Generate tests'
 
-          option :framework, default: "minitest", values: %w[minitest rspec]
+          option :framework, default: 'minitest', values: %w[minitest rspec]
 
           def call(framework:, **)
             puts "generated tests - framework: #{framework}"
           end
         end
+        # rubocop:enable Style/Documentation
       end
 
       register 'version', Version, aliases: ['v', '-v', '--version']

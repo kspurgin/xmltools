@@ -10,7 +10,7 @@ module Xmltools
   # Common validation macros shared across the application
   class AppContract < Dry::Validation::Contract
     include Xml
-    
+
     register_macro(:existing_dir_or_file) do
       next if value.empty?
 
@@ -20,7 +20,7 @@ module Xmltools
 
     register_macro(:valid_schema) do
       next if value.empty?
-      
+
       begin
         schema_doc(value)
       rescue Xmltools::Xml::InvalidSchemaError
@@ -45,7 +45,7 @@ module Xmltools
     private
 
     def dir_has_xml?(path, recurse)
-      recurse ? dir_has_xml_recursive?(path) : dir_has_xml_nonrecursive?(path) 
+      recurse ? dir_has_xml_recursive?(path) : dir_has_xml_nonrecursive?(path)
     end
 
     def dir_has_xml_nonrecursive?(path)

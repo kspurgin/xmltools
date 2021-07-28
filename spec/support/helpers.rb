@@ -6,7 +6,7 @@ module RSpec
       def files
         @files ||= Dry::Files.new
       end
-      
+
       def capture_error
         require 'stringio'
         error = StringIO.new
@@ -39,23 +39,23 @@ module RSpec
 
       def fixtures_dir
         home = File.realpath(File.join(File.dirname(__FILE__), '..', '..'))
-        File.join(home, 'spec', 'support', 'fixtures') 
+        File.join(home, 'spec', 'support', 'fixtures')
       end
 
       def ok_config
         config = <<~CONFIG
-        input_dir: #{files.join(fixtures_dir, 'xml')}
-        recursive: false
-        schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema.xsd')}
+          input_dir: #{files.join(fixtures_dir, 'xml')}
+          recursive: false
+          schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema.xsd')}
         CONFIG
         config
       end
 
       def ok_config_recursive
         config = <<~CONFIG
-        input_dir: #{files.join(fixtures_dir, 'xml')}
-        recursive: true
-        schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema.xsd')}
+          input_dir: #{files.join(fixtures_dir, 'xml')}
+          recursive: true
+          schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema.xsd')}
         CONFIG
         config
       end
