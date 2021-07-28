@@ -9,19 +9,17 @@ require 'xmltools'
 module Xmltools
   # Common validation macros shared across the application
   class AppContract < Dry::Validation::Contract
-    register_macro(:existing_dir) do
+    register_macro(:existing_dir_or_file) do
       next if value.empty?
 
       path = files.expand_path(value)
-      key.failure('directory does not exist') unless files.exist?(path)
+      key.failure("#{key_name} does not exist at #{values.data[key_name]}") unless files.exist?(path)
     end
-    
+
     register_macro(:xml_dir) do
-      keys = values.keys
-      dir_key = keys[0]
-      dir = values[dir_key]
-      recurse_key = keys[1]
-      recurse = values[recurse_key]
+      vals = values.values
+      dir = vals[0]
+      recurse = vals[1]
 
       next if value.empty?
 

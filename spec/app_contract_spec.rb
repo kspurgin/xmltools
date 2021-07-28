@@ -9,42 +9,82 @@ RSpec.describe 'Xmltools::AppContract' do
 
   before{ @files = Dry::Files.new }
 
-  describe 'existing_dir' do
-    class DirContract < Xmltools::AppContract
-      schema do
-        required(:dir).value(:string)
+  describe 'existing_dir_or_file' do
+    context 'when validating a directory' do
+      class DirContract < Xmltools::AppContract
+        schema do
+          required(:dir).value(:string)
+        end
+
+        rule(:dir).validate(:existing_dir_or_file)
+      end
+      
+      let(:contract){ DirContract.new }
+      let(:result){ contract.call(dir: dirval) }
+
+      context 'with empty string' do
+        let(:dirval){ '' }
+        it 'is success' do
+          expect(result.success?).to be true
+        end
       end
 
-      rule(:dir).validate(:existing_dir)
+      context 'with existing directory' do
+        let(:dirval){ fixtures_dir }
+        it 'is success' do
+          expect(result.success?).to be true
+        end
+      end
+
+      context 'with nonexistent directory' do
+        let(:dirval){ '/a/b/c/d/e' }
+        it 'is failure' do
+          expect(result.failure?).to be true
+        end
+        it 'has expected message' do
+          msg = "dir does not exist at #{dirval}"
+          expect(result.errors.messages.first.text).to eq(msg)
+        end
+      end
     end
-    
-    let(:contract){ DirContract.new }
-    let(:result){ contract.call(dir: dirval) }
 
-    context 'with empty string' do
-      let(:dirval){ '' }
-      it 'is success' do
-        expect(result.success?).to be true
+    context 'when validating a file' do
+      class FileContract < Xmltools::AppContract
+        schema do
+          required(:file).value(:string)
+        end
+
+        rule(:file).validate(:existing_dir_or_file)
+      end
+      
+      let(:contract){ FileContract.new }
+      let(:result){ contract.call(file: fileval) }
+
+      context 'with empty string' do
+        let(:fileval){ '' }
+        it 'is success' do
+          expect(result.success?).to be true
+        end
+      end
+
+      context 'with existing file' do
+        let(:fileval){ @files.join(fixtures_dir, 'xsd', 'mods_schema.xsd') }
+        it 'is success' do
+          expect(result.success?).to be true
+        end
+      end
+
+      context 'with nonexistent file' do
+        let(:fileval){ @files.join(fixtures_dir, 'xsd', 'missing.xsd') }
+        it 'is failure' do
+          expect(result.failure?).to be true
+        end
+        it 'has expected message' do
+          msg = "file does not exist at #{fileval}"
+          expect(result.errors.messages.first.text).to eq(msg)
+        end
       end
     end
-
-    context 'with existing directory' do
-      let(:dirval){ fixtures_dir }
-      it 'is success' do
-        expect(result.success?).to be true
-      end
-    end
-
-    context 'with nonexistent directory' do
-      let(:dirval){ '/a/b/c/d/e' }
-      it 'is failure' do
-        expect(result.failure?).to be true
-      end
-      it 'has expected message' do
-        expect(result.errors.messages.first.text).to eq('directory does not exist')
-      end
-    end
-
   end
 
   describe 'xml_dir' do
@@ -67,6 +107,16 @@ RSpec.describe 'Xmltools::AppContract' do
       end
     end
 
+    context 'with nonexistent directory' do
+      let(:dirval){ '/a/b/c/d/e' }
+      it 'raises Errno::ENOENT' do
+        expect{ result }.to raise_error(Errno::ENOENT)
+      end
+      # it 'blah' do
+      #   expect(result.failure?).to be true
+      # end
+    end
+    
     context 'with existing path containing an XML file' do
       before do
         @path = @files.join(fixtures_dir, 'a.xml')

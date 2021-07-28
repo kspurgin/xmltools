@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
+require 'dry/files'
+
 module RSpec
   module Support
     module Helpers
+      def files
+        @files ||= Dry::Files.new
+      end
+      
       def fixtures_dir
         home = File.realpath(File.join(File.dirname(__FILE__), '..', '..'))
         File.join(home, 'spec', 'support', 'fixtures') 
