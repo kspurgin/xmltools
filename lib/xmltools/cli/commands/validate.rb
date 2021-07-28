@@ -14,11 +14,13 @@ module Xmltools
 
         def call(**options)
           contract = ValidateContract.new
+          # rubocop:disable Lint/UselessAssignment
           validated = contract.call(
             input_dir: options.fetch(:input_dir, ''),
             schema: options.fetch(:schema, ''),
             recursive: options.fetch(:recursive, false)
           )
+          # rubocop:enable Lint/UselessAssignment
         end
       end
     end

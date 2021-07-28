@@ -23,7 +23,7 @@ module Xmltools
     def initialize(config_path = DEFAULT_FILE)
       @hash = {}
       @path = File.expand_path(config_path)
-      file_missing? ? handle_missing_file : get_hash_from_yaml
+      file_missing? ? handle_missing_file : hash_from_yaml
       @config = Xmltools::Config.new(@hash)
       Xmltools.setup(@config.hash)
     end
@@ -42,20 +42,21 @@ module Xmltools
       logger.warn("Config file does not exist at #{@path}")
     end
 
-    def get_hash_from_yaml
+    def hash_from_yaml
       yaml = File.read(@path)
-      if yaml.empty?
-        logger.warn("Empty config file at #{path}")
-        return
-      end
+      empty_yaml = yaml.empty?
+      logger.warn("Empty config file at #{path}") if empty_yaml
+      return if empty_yaml
 
-      begin
-        result = YAML.safe_load(yaml)
-      rescue Psych::SyntaxError => e
-        logger.warn("Invalid config file at #{path}. Cannot parse the YAML because: #{e.message}")
-      else
-        @hash = result
-      end
+      parse_yaml(yaml)
+    end
+
+    def parse_yaml(yaml)
+      result = YAML.safe_load(yaml)
+    rescue Psych::SyntaxError => e
+      logger.warn("Invalid config file at #{path}. Cannot parse the YAML because: #{e.message}")
+    else
+      @hash = result
     end
   end
 end

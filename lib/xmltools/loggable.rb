@@ -12,7 +12,7 @@ module Xmltools
 
     # Global, memoized, lazy initialized instance of a logger
     def self.logger
-      @logger ||= Logger.new(STDOUT)
+      @logger ||= Logger.new($stdout)
     end
   end
 end
