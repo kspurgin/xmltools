@@ -11,6 +11,7 @@ module Xmltools
     include Xmltools::Loggable
 
     attr_reader :orig, :hash
+
     def initialize(hash = {})
       @orig = hash
       fixup_hash unless @orig.empty?
@@ -29,7 +30,7 @@ module Xmltools
 
     def valid_config_data
       hash = validation_result.values.data
-      validation_result.errors.to_h.keys.each do |key|
+      validation_result.errors.to_h.each_key do |key|
         hash.delete(key)
       end
       hash

@@ -19,12 +19,7 @@ module Xmltools
             schema: options.fetch(:schema, ''),
             recursive: options.fetch(:recursive, false)
           )
-          binding.pry
-#          puts "#{options.fetch(input).inspect} -- #{options.fetch(schema).inspect}"
-          #          Xmltools::Validator.new(input: input, schema: schema)
         end
-
-        private
       end
     end
   end

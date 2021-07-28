@@ -43,21 +43,19 @@ module RSpec
       end
 
       def ok_config
-        config = <<~CONFIG
+        <<~CONFIG
           input_dir: #{files.join(fixtures_dir, 'xml')}
           recursive: false
           schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema.xsd')}
         CONFIG
-        config
       end
 
       def ok_config_recursive
-        config = <<~CONFIG
+        <<~CONFIG
           input_dir: #{files.join(fixtures_dir, 'xml')}
           recursive: true
           schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema.xsd')}
         CONFIG
-        config
       end
 
       def config_file(config)

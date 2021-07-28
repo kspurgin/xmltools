@@ -19,6 +19,7 @@ module Xmltools
     DEFAULT_FILE = File.join(XMLTOOLS_HOME, DOTFILE)
 
     attr_reader :path, :config
+
     def initialize(config_path = DEFAULT_FILE)
       @hash = {}
       @path = File.expand_path(config_path)

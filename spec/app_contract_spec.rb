@@ -40,8 +40,6 @@ RSpec.describe 'Xmltools::AppContract' do
   let(:described_class){ Xmltools::AppContract }
   let(:recurse){ false }
 
-  #  before{ files = Dry::Files.new }
-
   describe 'existing_dir_or_file' do
     context 'when validating a directory' do
       let(:contract){ DirContract.new }
@@ -105,8 +103,6 @@ RSpec.describe 'Xmltools::AppContract' do
   end
 
   describe 'valid_schema' do
-
-
     let(:contract){ SchemaContract.new }
     let(:result){ contract.call(path: schemaval) }
 
