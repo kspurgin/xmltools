@@ -18,6 +18,11 @@ module Xmltools
       key.failure("#{key_name} does not exist at #{values.data[key_name]}") unless files.exist?(path)
     end
 
+    register_macro(:populated) do
+      msg = "No value for #{key_name} found in config file(s). You must provide a value."
+      key.failure(msg) if value.blank?
+    end
+
     register_macro(:valid_schema) do
       next if value.empty?
 

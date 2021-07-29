@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-class DirContract < Xmltools::AppContract
+class ExistingDirContract < Xmltools::AppContract
   schema do
     required(:dir).value(:string)
   end
@@ -10,7 +10,7 @@ class DirContract < Xmltools::AppContract
   rule(:dir).validate(:existing_dir_or_file)
 end
 
-class FileContract < Xmltools::AppContract
+class ExistingFileContract < Xmltools::AppContract
   schema do
     required(:file).value(:string)
   end
@@ -18,7 +18,15 @@ class FileContract < Xmltools::AppContract
   rule(:file).validate(:existing_dir_or_file)
 end
 
-class SchemaContract < Xmltools::AppContract
+class PopulatedContract < Xmltools::AppContract
+  schema do
+    optional(:param).value(:string)
+  end
+
+  rule(:param).validate(:populated)
+end
+
+class SchemaValidContract < Xmltools::AppContract
   schema do
     required(:path).value(:string)
   end
@@ -26,7 +34,7 @@ class SchemaContract < Xmltools::AppContract
   rule(:path).validate(:valid_schema)
 end
 
-class XMLDirContract < Xmltools::AppContract
+class XmlDirContract < Xmltools::AppContract
   schema do
     required(:dir).value(:string)
     required(:recurse).value(:bool)
@@ -40,9 +48,9 @@ RSpec.describe 'Xmltools::AppContract' do
   let(:described_class){ Xmltools::AppContract }
   let(:recurse){ false }
 
-  describe 'existing_dir_or_file' do
+  describe 'macro: existing_dir_or_file' do
     context 'when validating a directory' do
-      let(:contract){ DirContract.new }
+      let(:contract){ ExistingDirContract.new }
       let(:result){ contract.call(dir: dirval) }
 
       context 'with empty string' do
@@ -72,7 +80,7 @@ RSpec.describe 'Xmltools::AppContract' do
     end
 
     context 'when validating a file' do
-      let(:contract){ FileContract.new }
+      let(:contract){ ExistingFileContract.new }
       let(:result){ contract.call(file: fileval) }
 
       context 'with empty string' do
@@ -102,8 +110,32 @@ RSpec.describe 'Xmltools::AppContract' do
     end
   end
 
-  describe 'valid_schema' do
-    let(:contract){ SchemaContract.new }
+  describe 'macro: populated' do
+    let(:contract){ PopulatedContract.new }
+    let(:result){ contract.call(param: paramval) }
+
+    context 'with populated parameter' do
+      let(:paramval){ 'something' }
+      it 'is success' do
+        expect(result.success?).to be true
+      end
+    end
+
+    context 'with empty parameter' do
+      let(:paramval){ '' }
+      it 'is failure' do
+        expect(result.failure?).to be true
+      end
+      it 'prints expected message to STDOUT' do
+        messages = result.errors.messages.map(&:text)
+        msg = 'No value for param found in config file(s). You must provide a value.'
+        expect(messages).to eq([msg])
+      end
+    end
+  end
+  
+  describe 'macro: valid_schema' do
+    let(:contract){ SchemaValidContract.new }
     let(:result){ contract.call(path: schemaval) }
 
     context 'with valid schema' do
@@ -126,8 +158,8 @@ RSpec.describe 'Xmltools::AppContract' do
     end
   end
 
-  describe 'xml_dir' do
-    let(:contract){ XMLDirContract.new }
+  describe 'macro: xml_dir' do
+    let(:contract){ XmlDirContract.new }
     let(:result){ contract.call(dir: dirval, recurse: recurse) }
 
     context 'with empty string' do
