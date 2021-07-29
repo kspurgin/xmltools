@@ -13,9 +13,6 @@ module Xmltools
     module Commands
       extend Dry::CLI::Registry
 
-      # Load any default config values so we don't have to treat them as required params
-      Xmltools::ConfigLoader.new
-
       # rubocop:disable Style/Documentation
       class Echo < Dry::CLI::Command
         desc 'Print input'
