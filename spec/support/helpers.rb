@@ -37,9 +37,25 @@ module RSpec
         path.sub(%r{^.*/xmltools}, '/xmltools')
       end
 
+      def config_file(config)
+        path = files.join(fixtures_dir, 'configs', 'config.yml')
+        return path if files.exist?(path) && files.read(path) == config
+
+        files.write(path, config)
+        path
+      end
+
       def fixtures_dir
         home = File.realpath(File.join(File.dirname(__FILE__), '..', '..'))
         File.join(home, 'spec', 'support', 'fixtures')
+      end
+
+      def invalid_schema_config
+        <<~CONFIG
+          input_dir: #{files.join(fixtures_dir, 'xml')}
+          recursive: false
+          schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema_invalid.xsd')}
+        CONFIG
       end
 
       def ok_config
@@ -58,12 +74,12 @@ module RSpec
         CONFIG
       end
 
-      def config_file(config)
-        path = files.join(fixtures_dir, 'configs', 'config.yml')
-        return path if files.exist?(path) && files.read(path) == config
-
-        files.write(path, config)
-        path
+      def ok_tmp_config
+        <<~CONFIG
+          input_dir: #{files.join(fixtures_dir, 'tmpxml')}
+          recursive: false
+          schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema.xsd')}
+        CONFIG
       end
     end
   end

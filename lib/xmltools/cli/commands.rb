@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'bundler/setup'
 require 'dry/cli'
 
 require 'xmltools'
+require 'xmltools/config_loader'
 require 'xmltools/cli/commands/validate'
 require 'xmltools/cli/commands/version'
 
@@ -12,6 +12,9 @@ module Xmltools
     # Registry of commands for CLI
     module Commands
       extend Dry::CLI::Registry
+
+      # Load any default config values so we don't have to treat them as required params
+      Xmltools::ConfigLoader.new
 
       # rubocop:disable Style/Documentation
       class Echo < Dry::CLI::Command

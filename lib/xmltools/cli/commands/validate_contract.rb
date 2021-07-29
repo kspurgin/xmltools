@@ -4,6 +4,7 @@ require 'dry-validation'
 
 require 'xmltools'
 require 'xmltools/app_contract'
+require 'xmltools/config_loader'
 
 module Xmltools
   module CLI
@@ -14,8 +15,16 @@ module Xmltools
           optional(:input_dir).value(:string)
           optional(:schema).value(:string)
           optional(:recursive).value(:bool)
+          optional(:config).value(:string)
         end
 
+        rule(:config).validate(:existing_dir_or_file)
+        rule do
+          next if values.data[:config].empty?
+          next if rule_error?(:config)
+
+          Xmltools::ConfigLoader.new(values[:config])
+        end
         rule(:input_dir).validate(:existing_dir_or_file)
         rule(:input_dir).validate(xml_dir: :recursive)
 

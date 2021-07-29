@@ -2,6 +2,7 @@
 
 require 'xmltools/config_contract'
 require 'xmltools/loggable'
+require 'xmltools/validatable'
 
 module Xmltools
   # This class represents a configuration of the Xmltools application
@@ -9,6 +10,7 @@ module Xmltools
   # passed in as an argument to the CLI
   class Config
     include Xmltools::Loggable
+    include Xmltools::Validatable
 
     attr_reader :orig, :hash
 
@@ -19,21 +21,13 @@ module Xmltools
         @hash = @orig
         return
       end
-      @hash = valid_config_data
+      @hash = valid_data(validated)
     end
 
     private
 
     def validated
       @validated ||= validate
-    end
-
-    def valid_config_data
-      hash = validated.values.data
-      validated.errors.to_h.each_key do |key|
-        hash.delete(key)
-      end
-      hash
     end
 
     def fixup_hash
