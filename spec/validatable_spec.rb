@@ -28,6 +28,14 @@ RSpec.describe 'Xmltools::Validatable' do
         expect(hash.keys.sort).to eq(%i[input_dir recursive])
       end
     end
+
+    context 'when only one data value passed' do
+      let(:confighash){ YAML.safe_load(only_recursive_config).transform_keys(&:to_sym) }
+      let(:result){ contract.call(confighash) }
+      it 'returns hash with only valid, populated data' do
+        expect(hash.keys.sort).to eq(%i[recursive])
+      end
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength

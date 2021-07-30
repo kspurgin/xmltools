@@ -12,15 +12,11 @@ module Xmltools
     include Xmltools::Loggable
     include Xmltools::Validatable
 
-    attr_reader :orig, :hash
+    attr_reader :hash
 
     def initialize(hash = {})
       @orig = hash
       fixup_hash unless @orig.empty?
-      if validated.success?
-        @hash = @orig
-        return
-      end
       @hash = valid_data(validated)
     end
 
@@ -39,9 +35,10 @@ module Xmltools
     def validate
       contract = ConfigContract.new
       contract.call(
-        input_dir: @orig.fetch(:input_dir, ''),
-        schema: @orig.fetch(:schema, ''),
-        recursive: @orig.fetch(:recursive, false)
+        @orig
+        # input_dir: @orig.fetch(:input_dir, ''),
+        # schema: @orig.fetch(:schema, ''),
+        # recursive: @orig.fetch(:recursive, false)
       )
     end
   end

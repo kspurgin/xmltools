@@ -39,7 +39,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'nokogiri', '~> 1.10.4'
   spec.add_dependency 'progressbar', '~> 1.10.1'
 
+  spec.add_development_dependency 'byebug'
   spec.add_development_dependency 'pry', '~> 0.14.1'
+  spec.add_development_dependency 'pry-byebug'
   spec.add_development_dependency 'rubocop', '~> 1.18.3'
   spec.add_development_dependency 'rubocop-rspec', '~> 2.4.0'
 end

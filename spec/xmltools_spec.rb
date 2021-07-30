@@ -9,24 +9,21 @@ RSpec.describe Xmltools do
   end
 
   describe 'settings' do
-    before(:all){ Xmltools.reset_config }
-
     context 'when inititally started' do
+      before(:all){ Xmltools.reset_config }
       it 'input_dir = blank' do
-        expect(Xmltools.input_dir).to eq('')
+        expect(Xmltools.input_dir).to be nil
       end
       it 'schema = blank' do
-        expect(Xmltools.schema).to eq('')
+        expect(Xmltools.schema).to be nil
       end
       it 'recursive = false' do
-        expect(Xmltools.recursive).to be false
+        expect(Xmltools.recursive).to be nil
       end
     end
 
-    context 'after given a config' do
-      before do
-        Xmltools::ConfigLoader.new(config_file(ok_config_recursive))
-      end
+    context 'after loading default config' do
+      before(:all){ config_reset }
       it 'input_dir = dir from config' do
         cleaned = clean_test_path(Xmltools.input_dir)
         expect(cleaned).to eq('/xmltools/spec/support/fixtures/xml')
@@ -36,6 +33,24 @@ RSpec.describe Xmltools do
         expect(cleaned).to eq('/xmltools/spec/support/fixtures/xsd/mods_schema.xsd')
       end
       it 'recursive = value from file' do
+        expect(Xmltools.recursive).to be false
+      end
+    end
+
+    context 'after loading default config, followed by additional config' do
+      before(:all) do
+        config_reset
+        Xmltools::ConfigLoader.new(config_file(ok_config_recursive))
+      end
+      it 'input_dir = dir from new config' do
+        cleaned = clean_test_path(Xmltools.input_dir)
+        expect(cleaned).to eq('/xmltools/spec/support/fixtures/xml2')
+      end
+      it 'schema = file from new config' do
+        cleaned = clean_test_path(Xmltools.schema)
+        expect(cleaned).to eq('/xmltools/spec/support/fixtures/xsd/mods_schema2.xsd')
+      end
+      it 'recursive = value from new config' do
         expect(Xmltools.recursive).to be true
       end
     end

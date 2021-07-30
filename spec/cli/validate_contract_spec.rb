@@ -13,7 +13,7 @@ RSpec.describe 'Xmltools::CLI::Commands::ValidateContract' do
     let(:contract){ described_class.new }
     let(:dirval){ files.join(fixtures_dir, 'xml') }
     let(:schemaval){ files.join(fixtures_dir, 'xsd', 'mods_schema.xsd') }
-    let(:result){ contract.call(input_dir: dirval, schema: schemaval, recursive: false, config: '') }
+    let(:result){ contract.call(input_dir: dirval, schema: schemaval, recursive: false) }
 
     context 'with expected values' do
       it 'is success' do

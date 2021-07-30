@@ -45,6 +45,12 @@ module RSpec
         path
       end
 
+      def config_reset
+        puts 'Resetting config'
+        Xmltools.reset_config
+        Xmltools::ConfigLoader.new(config_file(ok_config))
+      end
+
       def fixtures_dir
         home = File.realpath(File.join(File.dirname(__FILE__), '..', '..'))
         File.join(home, 'spec', 'support', 'fixtures')
@@ -68,9 +74,9 @@ module RSpec
 
       def ok_config_recursive
         <<~CONFIG
-          input_dir: #{files.join(fixtures_dir, 'xml')}
+          input_dir: #{files.join(fixtures_dir, 'xml2')}
           recursive: true
-          schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema.xsd')}
+          schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema2.xsd')}
         CONFIG
       end
 
@@ -79,6 +85,12 @@ module RSpec
           input_dir: #{files.join(fixtures_dir, 'tmpxml')}
           recursive: false
           schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema.xsd')}
+        CONFIG
+      end
+
+      def only_recursive_config
+        <<~CONFIG
+          recursive: true
         CONFIG
       end
     end

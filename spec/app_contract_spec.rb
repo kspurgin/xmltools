@@ -133,7 +133,7 @@ RSpec.describe 'Xmltools::AppContract' do
       end
     end
   end
-  
+
   describe 'macro: valid_schema' do
     let(:contract){ SchemaValidContract.new }
     let(:result){ contract.call(path: schemaval) }

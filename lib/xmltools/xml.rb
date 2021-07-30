@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'nokogiri'
-require 'xmltools'
+# require 'xmltools'
 
 module Xmltools
   # Mixin methods for working with XML

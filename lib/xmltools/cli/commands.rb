@@ -2,8 +2,8 @@
 
 require 'dry/cli'
 
-require 'xmltools'
-require 'xmltools/config_loader'
+# require 'xmltools'
+# require 'xmltools/config_loader'
 require 'xmltools/cli/commands/validate'
 require 'xmltools/cli/commands/version'
 

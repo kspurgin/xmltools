@@ -3,7 +3,7 @@
 require 'pathname'
 require 'dry-validation'
 
-require 'xmltools'
+# require 'xmltools'
 require 'xmltools/xml'
 
 module Xmltools
@@ -12,7 +12,7 @@ module Xmltools
     include Xml
 
     register_macro(:existing_dir_or_file) do
-      next if value.empty?
+      next if value.blank?
 
       path = files.expand_path(value)
       key.failure("#{key_name} does not exist at #{values.data[key_name]}") unless files.exist?(path)
@@ -24,7 +24,7 @@ module Xmltools
     end
 
     register_macro(:valid_schema) do
-      next if value.empty?
+      next if value.blank?
 
       begin
         schema_doc(value)
@@ -36,7 +36,7 @@ module Xmltools
     register_macro(:xml_dir) do |macro:|
       recurse = values[macro.args[0]]
 
-      next if value.empty?
+      next if value.blank?
 
       errors = result.errors
       next unless errors.empty? || errors[key_name].empty?
