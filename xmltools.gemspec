@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activesupport', '~> 6.1.4'
   spec.add_dependency 'dry-cli', '~> 0.6'
   spec.add_dependency 'dry-configurable', '~> 0.11'
+  spec.add_dependency 'dry-container', '~> 0.7'
   spec.add_dependency 'dry-files', '~> 0.1'
   spec.add_dependency 'dry-validation', '~> 1.6'
   spec.add_dependency 'nokogiri', '~> 1.10.4'
