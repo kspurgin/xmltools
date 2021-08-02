@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'xmltools/cli'
-require 'xmltools/config_loader'
 require 'xmltools/validatable'
 
 module Xmltools
@@ -9,6 +8,8 @@ module Xmltools
     module Commands
       # Command to validate XML files in a directory
       class Validate < Dry::CLI::Command
+        include AutoInject[:config_loader, :config_validator, 'cli.commands.validate_params_validator',
+                          'cli.commands.validate_run_validator']
         include Xmltools::CLI
         include Xmltools::Validatable
 
@@ -45,7 +46,7 @@ module Xmltools
         def call(**options)
           puts "Handling validation options...\n\n"
           process_given_options(options)
-          result = ValidateRunContract.new.call(Xmltools.config.values.compact)
+          result = validate_run_validator.call(Xmltools.config.values.compact)
           result.success? ? success(result) : failure(result)
         end
 
@@ -61,8 +62,8 @@ module Xmltools
         end
 
         def process_config(config)
-          result = ConfigOptionContract.new.call(config: config)
-          Xmltools::ConfigLoader.new.call(config) if result.success?
+          result = config_validator.call(config: config)
+          config_loader.call(config) if result.success?
         end
 
         def process_given_options(options)
@@ -76,15 +77,13 @@ module Xmltools
         end
 
         def process_remaining(remaining)
-          contract = ValidateContract.new
-          params = valid_data(contract.call(remaining))
-          Xmltools.setup(params)
+          params = validate_params_validator.call(remaining)
+          Xmltools.setup(valid_data(params))
         end
 
         def success(result)
           puts 'Validating XML'
           put_app_options(%i[input_dir schema recursive]) if result.success?
-          # XmlValidator.new(result.data)
         end
       end
     end
