@@ -48,7 +48,7 @@ module RSpec
       def config_reset
         puts 'Resetting config'
         Xmltools.reset_config
-        Xmltools::ConfigLoader.new(config_file(ok_config))
+        Xmltools::ConfigLoader.new.call(config_file(ok_config))
       end
 
       def fixtures_dir

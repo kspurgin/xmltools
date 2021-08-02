@@ -2,56 +2,48 @@
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe 'Xmltools::ConfigLoader' do
-  include RSpec::Support::Helpers
-
-  let(:described_class){ Xmltools::ConfigLoader }
+  subject(:loader) { Xmltools::ConfigLoader.new }
+  
   context 'when config file is not found' do
     let(:path){ files.join(fixtures_dir, 'configs', 'nonexistent_config.yml') }
     it 'outputs warning to STDOUT' do
       warning = /WARN -- : Config file does not exist at #{path}/
-      expect{ described_class.new(path) }.to output(warning).to_stdout_from_any_process
-    end
-
-    it 'returns empty hash' do
-      loader = described_class.new(path)
-      expect(loader.instance_variable_get(:@hash)).to eq({})
+      expect{ loader.call(path) }.to output(warning).to_stdout_from_any_process
     end
   end
 
-  describe '#path' do
-    context 'initialized without path' do
-      it 'returns default config path' do
-        loader = described_class.new
-        default_path = loader.send(:default_file)
-        expect(loader.path).to eq(default_path)
+  describe '#call' do
+    let(:config){ spy Xmltools::Config }
+    before do
+      Xmltools::AutoInject.container.enable_stubs!
+      Xmltools::AutoInject.container.stub(:app_config, config)
+    end
+    after do
+      Xmltools::AutoInject.container.unstub(:app_config)
+    end
+    context 'when config file is not found' do
+      let(:path){ files.join(fixtures_dir, 'configs', 'nonexistent_config.yml') }
+
+      it 'calls Config with empty hash' do
+        loader.call(path)
+        expect(config).to have_received(:call).with({})
       end
     end
 
-    context 'initialized with path' do
-      let(:path){ config_file(ok_config) }
-      it 'returns given config path' do
-        loader = described_class.new(path)
-        expect(loader.path).to eq(path)
-      end
-    end
-  end
-
-  # no longer has @config instance variable after dependency injection refactor of Config
-  # these tests should be rewritten after this class is refactored
-  describe '#config' do
     context 'bad YAML' do
       before do
         @config = files.join(fixtures_dir, 'configs', 'bad.yml')
         files.write(@config, '*')
       end
       after{ files.delete(@config) }
-      let(:loader){ described_class.new(@config) }
+      let(:result){ loader.call(@config) }
       it 'outputs warning to STDOUT' do
         warning = /WARN -- : Invalid config file at #{@config}/
-        expect{ described_class.new(@config) }.to output(warning).to_stdout_from_any_process
+        expect{ result }.to output(warning).to_stdout_from_any_process
       end
-      xit 'calls Config with empty hash' do
-        expect(loader.config.hash).to eq({})
+      it 'calls Config with empty hash' do
+        result
+        expect(config).to have_received(:call).with({})
       end
     end
 
@@ -61,21 +53,24 @@ RSpec.describe 'Xmltools::ConfigLoader' do
         files.touch(@config)
       end
       after{ files.delete(@config) }
-      let(:loader){ described_class.new(@config) }
+      let(:result){ loader.call(@config) }
       it 'outputs warning to STDOUT' do
         warning = /WARN -- : Empty config file at #{@config}/
-        expect{ described_class.new(@config) }.to output(warning).to_stdout_from_any_process
+        expect{ result }.to output(warning).to_stdout_from_any_process
       end
-      xit 'calls Config with empty hash' do
-        expect(loader.config.hash).to eq({})
+      it 'calls Config with empty hash' do
+        result
+        expect(config).to have_received(:call).with({})
       end
     end
 
     context 'ok YAML file' do
-      let(:config){ config_file(ok_config) }
-      let(:loader){ described_class.new(config) }
-      xit 'calls Config with expected hash' do
-        expect(loader.config.hash.keys).to include(:input_dir)
+      let(:configpath){ config_file(ok_config) }
+      let(:result){ loader.call(configpath) }
+      it 'calls Config with expected hash' do
+        result
+        expected = YAML.safe_load(ok_config)
+        expect(config).to have_received(:call).with(expected)
       end
     end
   end

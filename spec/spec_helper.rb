@@ -2,6 +2,7 @@
 
 require 'bundler/setup'
 require 'dry/configurable/test_interface'
+require 'dry/container/stub'
 
 require 'support/helpers'
 require 'xmltools'

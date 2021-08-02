@@ -40,7 +40,7 @@ RSpec.describe Xmltools do
     context 'after loading default config, followed by additional config' do
       before(:all) do
         config_reset
-        Xmltools::ConfigLoader.new(config_file(ok_config_recursive))
+        Xmltools::ConfigLoader.new.call(config_file(ok_config_recursive))
       end
       it 'input_dir = dir from new config' do
         cleaned = clean_test_path(Xmltools.input_dir)

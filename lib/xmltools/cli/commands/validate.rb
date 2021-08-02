@@ -62,7 +62,7 @@ module Xmltools
 
         def process_config(config)
           result = ConfigOptionContract.new.call(config: config)
-          Xmltools::ConfigLoader.new(config) if result.success?
+          Xmltools::ConfigLoader.new.call(config) if result.success?
         end
 
         def process_given_options(options)

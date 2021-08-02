@@ -8,8 +8,9 @@ module Xmltools
     extend Dry::Container::Mixin
   end
 
-  AppContainer.register(:xml_input, -> { Xmltools::XmlDirectory.new })
+  AppContainer.register(:app_config, -> { Xmltools::Config.new })
   AppContainer.register(:manage_xml_validation, -> { ManageXmlValidation.new })
+  AppContainer.register(:xml_input, -> { Xmltools::XmlDirectory.new })
 
   # validation contracts
   AppContainer.register(:config_validator, -> { Xmltools::ConfigContract.new })
