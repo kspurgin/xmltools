@@ -9,7 +9,7 @@ module Xmltools
       # Command to validate XML files in a directory
       class Validate < Dry::CLI::Command
         include AutoInject[:config_loader, :config_validator, 'cli.commands.validate_params_validator',
-                          'cli.commands.validate_run_validator']
+                           'cli.commands.validate_run_validator']
         include Xmltools::CLI
         include Xmltools::Validatable
 

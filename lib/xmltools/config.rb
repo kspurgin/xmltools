@@ -16,7 +16,7 @@ module Xmltools
       @hash = fixup(hash)
       valid_data(validated)
     end
-    
+
     private
 
     def validated
@@ -27,9 +27,9 @@ module Xmltools
       return hash if hash.empty?
 
       new_hash = hash.transform_keys(&:to_sym)
-      [:input_dir, :schema].each do |key|
+      %i[input_dir schema].each do |key|
         next unless new_hash.key?(key)
-        
+
         new_hash[key] = File.expand_path(new_hash[key])
       end
       new_hash

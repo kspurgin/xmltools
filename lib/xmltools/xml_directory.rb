@@ -11,18 +11,18 @@ module Xmltools
       @path = Pathname.new(Xmltools.input_dir)
       Xmltools.recursive ? recursive_files : files
     end
-    
+
     private
-    
+
     def files
       @path.children.select{ |child| child.extname == '.xml' }
     end
 
     def recursive_files
       Dir.glob("#{@path}/**/*")
-        .sort
-        .select{ |file| File.extname(file) == '.xml' }
-        .map{ |path| Pathname.new(path) }
+         .sort
+         .select{ |file| File.extname(file) == '.xml' }
+         .map{ |path| Pathname.new(path) }
     end
   end
 end

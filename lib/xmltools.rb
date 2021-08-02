@@ -21,8 +21,6 @@ require 'pry-byebug'
 module Xmltools
   extend Dry::Configurable
 
-  puts 'Loaded Xmltools'
-
   # Initial configuration settings
   setting :input_dir, reader: true
   setting :schema, reader: true

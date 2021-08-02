@@ -2,8 +2,8 @@
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe 'Xmltools::ConfigLoader' do
-  subject(:loader) { Xmltools::ConfigLoader.new }
-  
+  subject(:loader){ Xmltools::ConfigLoader.new }
+
   context 'when config file is not found' do
     let(:path){ files.join(fixtures_dir, 'configs', 'nonexistent_config.yml') }
     it 'outputs warning to STDOUT' do
