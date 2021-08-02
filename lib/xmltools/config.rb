@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'xmltools/config_contract'
 require 'xmltools/loggable'
 require 'xmltools/validatable'
 
@@ -9,37 +8,35 @@ module Xmltools
   # from the default .xmltools.yml file, or from another config file
   # passed in as an argument to the CLI
   class Config
+    include AutoInject[:config_validator]
     include Xmltools::Loggable
     include Xmltools::Validatable
 
-    attr_reader :hash
-
-    def initialize(hash = {})
-      @orig = hash
-      fixup_hash unless @orig.empty?
-      @hash = valid_data(validated)
+    def call(hash = {})
+      @hash = fixup(hash)
+      valid_data(validated)
     end
-
+    
     private
 
     def validated
       @validated ||= validate
     end
 
-    def fixup_hash
-      @orig = @orig.transform_keys(&:to_sym)
-      @orig[:input_dir] = File.expand_path(@orig[:input_dir]) if @orig.key?(:input_dir)
-      @orig[:schema] = File.expand_path(@orig[:schema]) if @orig.key?(:input_dir)
+    def fixup(hash)
+      return hash if hash.empty?
+
+      new_hash = hash.transform_keys(&:to_sym)
+      [:input_dir, :schema].each do |key|
+        next unless new_hash.key?(key)
+        
+        new_hash[key] = File.expand_path(new_hash[key])
+      end
+      new_hash
     end
 
     def validate
-      contract = ConfigContract.new
-      contract.call(
-        @orig
-        # input_dir: @orig.fetch(:input_dir, ''),
-        # schema: @orig.fetch(:schema, ''),
-        # recursive: @orig.fetch(:recursive, false)
-      )
+      config_validator.call(@hash)
     end
   end
 end

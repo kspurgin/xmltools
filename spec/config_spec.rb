@@ -9,8 +9,8 @@ RSpec.describe 'Xmltools::Config' do
 
   describe '#hash' do
     let(:confighash){ YAML.safe_load(configdata) }
-    let(:config){ described_class.new(confighash) }
-    let(:result){ config.hash }
+    let(:config){ described_class.new }
+    let(:result){ config.call(confighash) }
     before(:each){ Xmltools.reset_config }
     context 'when valid config' do
       let(:configdata){ ok_config }

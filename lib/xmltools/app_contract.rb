@@ -8,6 +8,7 @@ require 'xmltools/xml'
 
 module Xmltools
   # Common validation macros shared across the application
+  # Specific contracts using these macros inherit from this class
   class AppContract < Dry::Validation::Contract
     include Xml
 

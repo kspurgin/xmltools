@@ -18,14 +18,13 @@ module Xmltools
     XMLTOOLS_HOME = File.realpath(File.join(File.dirname(__FILE__), '..', '..'))
     DEFAULT_FILE = File.join(XMLTOOLS_HOME, DOTFILE)
 
-    attr_reader :path, :config
+    attr_reader :path
 
     def initialize(config_path = DEFAULT_FILE)
       @hash = {}
       @path = File.expand_path(config_path)
       file_missing? ? handle_missing_file : hash_from_yaml
-      @config = Xmltools::Config.new(@hash)
-      Xmltools.setup(@config.hash)
+      Xmltools.setup(Xmltools::Config.new.call(@hash))
     end
 
     private

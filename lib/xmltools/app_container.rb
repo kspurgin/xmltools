@@ -11,5 +11,8 @@ module Xmltools
   AppContainer.register(:xml_input, -> { Xmltools::XmlDirectory.new })
   AppContainer.register(:manage_xml_validation, -> { ManageXmlValidation.new })
 
+  # validation contracts
+  AppContainer.register(:config_validator, -> { Xmltools::ConfigContract.new })
+  
   AutoInject = Dry::AutoInject(AppContainer)
 end
