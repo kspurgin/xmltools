@@ -21,7 +21,7 @@ module Xmltools
 
     private
 
-    attr_accessor :hash
+    attr_reader :hash
     
     def expand_paths
       %i[input_dir schema].each do |key|
