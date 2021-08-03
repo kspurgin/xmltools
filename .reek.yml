@@ -27,6 +27,13 @@ detectors:
       #   to standard error. They are fine
       - 'RSpec::Support::Helpers#capture_error'
       - 'RSpec::Support::Helpers#capture_output'
+  UtilityFunction:
+    exclude:
+      # These methods live in mix-in modules and are intended to be utility functions!
+      - 'Xmltools::Loggable#logger'
+      - 'Xmltools::Validatable#valid_data'
+      - 'Xmltools::Xml#dir_has_xml_nonrecursive?'
+      - 'Xmltools::Xml#dir_has_xml_recursive?'
 directories:
   'spec/**':
     # Don't spend time writing documentation for dummy classes set up for testing

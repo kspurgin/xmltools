@@ -6,6 +6,7 @@ require 'nokogiri'
 module Xmltools
   # Mixin methods for working with XML
   module Xml
+    # Exception raised if XML schema cannot be read
     class InvalidSchemaError < StandardError; end
 
     def dir_has_xml_nonrecursive?(path)
@@ -30,8 +31,8 @@ module Xmltools
 
     def schema_doc(path)
       Nokogiri::XML::Schema(xml_files.read(path))
-    rescue Nokogiri::XML::SyntaxError => e
-      raise InvalidSchemaError, e.message
+    rescue Nokogiri::XML::SyntaxError => err
+      raise InvalidSchemaError, err.message
     end
   end
 end

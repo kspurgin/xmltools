@@ -14,15 +14,17 @@ module Xmltools
 
     private
 
+    attr_reader :path
+
     def files
-      @path.children.select{ |child| child.extname == '.xml' }
+      path.children.select{ |child| child.extname == '.xml' }
     end
 
     def recursive_files
-      Dir.glob("#{@path}/**/*")
+      Dir.glob("#{path}/**/*")
          .sort
          .select{ |file| File.extname(file) == '.xml' }
-         .map{ |path| Pathname.new(path) }
+         .map{ |pathname| Pathname.new(pathname) }
     end
   end
 end
