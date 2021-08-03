@@ -1,0 +1,38 @@
+---
+
+detectors:
+  # You can use filters to silence Reek warnings.
+  # Either because you simply disagree with Reek (we are not the police) or
+  # because you want to fix this at a later point in time.
+  DuplicateMethodCall:
+    exclude:
+      # These methods are copy/pasted from suggested helpers for testing output
+      #   to standard error. They are fine
+      - 'RSpec::Support::Helpers#capture_error'
+      - 'RSpec::Support::Helpers#capture_output'
+  FeatureEnvy:
+    exclude:
+      # These methods are copy/pasted from suggested helpers for testing output
+      #   to standard error. They are fine
+      - 'RSpec::Support::Helpers#capture_error'
+      - 'RSpec::Support::Helpers#capture_output'
+  RepeatedConditional:
+    exclude:
+      # Each of the `register_macro` calls is creating a block that will run in its
+      # own context, so `value.blank?` cannot be shared among them
+      - 'AppContract'
+  TooManyStatements:
+    exclude:
+      # These methods are copy/pasted from suggested helpers for testing output
+      #   to standard error. They are fine
+      - 'RSpec::Support::Helpers#capture_error'
+      - 'RSpec::Support::Helpers#capture_output'
+directories:
+  'spec/**':
+    # Don't spend time writing documentation for dummy classes set up for testing
+    IrresponsibleModule:
+      enabled: false
+  'spec/support/**':
+    # Support/Helpers should be utility functions
+    UtilityFunction:
+      enabled: false

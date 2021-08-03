@@ -42,33 +42,17 @@ module Xmltools
       errors = result.errors
       next unless errors.empty? || errors[key_name].empty?
 
-      unless dir_has_xml?(files.expand_path(value), recurse)
-        key.failure('directory contains no XML')
+      path = files.expand_path(value)
+      if recurse
+        key.failure('directory contains no XML') unless dir_has_xml_recursive?(path)
+        next
+      else
+        key.failure('directory contains no XML') unless dir_has_xml_nonrecursive?(path)
         next
       end
     end
 
     private
-
-    def dir_has_xml?(path, recurse)
-      recurse ? dir_has_xml_recursive?(path) : dir_has_xml_nonrecursive?(path)
-    end
-
-    def dir_has_xml_nonrecursive?(path)
-      pathname = Pathname.new(path)
-      xml = pathname.children(false).select{ |child| child.extname == '.xml' }
-      return true unless xml.empty?
-
-      false
-    end
-
-    def dir_has_xml_recursive?(path)
-      pathname = "#{path}/**/*"
-      xml = Dir.glob(pathname).select{ |fn| File.extname(fn) == '.xml' }
-      return true unless xml.empty?
-
-      false
-    end
 
     def files
       @files ||= Dry::Files.new

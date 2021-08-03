@@ -8,6 +8,22 @@ module Xmltools
   module Xml
     class InvalidSchemaError < StandardError; end
 
+    def dir_has_xml_nonrecursive?(path)
+      pathname = Pathname.new(path)
+      xml = pathname.children(false).select{ |child| child.extname == '.xml' }
+      return true unless xml.empty?
+
+      false
+    end
+
+    def dir_has_xml_recursive?(path)
+      pathname = "#{path}/**/*"
+      xml = Dir.glob(pathname).select{ |fn| File.extname(fn) == '.xml' }
+      return true unless xml.empty?
+
+      false
+    end
+
     def xml_files
       @xml_files ||= Dry::Files.new
     end

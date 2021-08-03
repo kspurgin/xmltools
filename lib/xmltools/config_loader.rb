@@ -13,8 +13,6 @@ module Xmltools
     include AutoInject[:app_config]
     include Xmltools::Loggable
 
-    class FileUnparseableError < StandardError; end
-
     DOTFILE = '.xmltools.yml'
     XMLTOOLS_HOME = File.realpath(File.join(File.dirname(__FILE__), '..', '..'))
     DEFAULT_FILE = File.join(XMLTOOLS_HOME, DOTFILE)

@@ -45,40 +45,32 @@ module Xmltools
 
         def call(**options)
           puts "Handling validation options...\n\n"
-          process_given_options(options)
-          result = validate_run_validator.call(Xmltools.config.values.compact)
-          result.success? ? success(result) : failure(result)
+          process_config(options) unless options[:config].blank?
+          process_remaining(options.tap{ |newhash| newhash.delete(:config) })
+          process_runtime_validation
         end
 
         private
 
         def failure(result)
-          puts 'Cannot validate due to errors:'
-          result.errors.sort_by(&:path).each do |err|
-            puts "  ERROR: #{err.path.join(', ')} #{err.text}"
-          end
-          puts ''
-          examples.each{ |example| puts "xmltools validate #{example}" }
+          put_command_errors('validate', result)
+          put_command_examples('xmltools validate')
         end
 
-        def process_config(config)
-          result = config_validator.call(config: config)
-          config_loader.call(config) if result.success?
-        end
-
-        def process_given_options(options)
+        def process_config(options)
           config = options[:config]
-          process_config(config) unless config.blank?
-          options.delete(:config)
-
-          return if options.empty?
-
-          process_remaining(options)
+          config_validation = config_validator.call(config: config)
+          config_loader.call(config) if config_validation.success?
         end
 
         def process_remaining(remaining)
           params = validate_params_validator.call(remaining)
           Xmltools.setup(valid_data(params))
+        end
+
+        def process_runtime_validation
+          run_validation = validate_run_validator.call(Xmltools.config.values.compact)
+          run_validation.success? ? success(run_validation) : failure(run_validation)
         end
 
         def success(result)

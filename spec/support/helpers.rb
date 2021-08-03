@@ -2,6 +2,7 @@
 
 module RSpec
   module Support
+    # Methods to support testing
     module Helpers
       def files
         @files ||= Dry::Files.new

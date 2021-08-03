@@ -13,30 +13,38 @@ module Xmltools
     include Xmltools::Validatable
 
     def call(hash = {})
-      @hash = fixup(hash)
+      @hash = hash
+      fixup_hash
       valid_data(validated)
     end
 
     private
 
+    def hash
+      @hash ||= {}
+    end
+    
     def validated
       @validated ||= validate
     end
 
-    def fixup(hash)
-      return hash if hash.empty?
-
-      new_hash = hash.transform_keys(&:to_sym)
+    def expand_paths
       %i[input_dir schema].each do |key|
-        next unless new_hash.key?(key)
+        next unless hash.key?(key)
 
-        new_hash[key] = File.expand_path(new_hash[key])
+        @hash[key] = File.expand_path(hash[key])
       end
-      new_hash
+    end
+    
+    def fixup_hash
+      return if hash.empty?
+
+      @hash = hash.transform_keys(&:to_sym)
+      expand_paths
     end
 
     def validate
-      config_validator.call(@hash)
+      config_validator.call(hash)
     end
   end
 end
