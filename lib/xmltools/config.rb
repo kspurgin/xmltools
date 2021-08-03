@@ -12,38 +12,33 @@ module Xmltools
     include Xmltools::Loggable
     include Xmltools::Validatable
 
+
     def call(hash = {})
       @hash = hash
       fixup_hash
-      valid_data(validated)
+      valid_data(validate_data)
     end
 
     private
 
-    def hash
-      @hash ||= {}
-    end
+    attr_accessor :hash
     
-    def validated
-      @validated ||= validate
-    end
-
     def expand_paths
       %i[input_dir schema].each do |key|
         next unless hash.key?(key)
 
-        @hash[key] = File.expand_path(hash[key])
+        hash[key] = File.expand_path(hash[key])
       end
     end
     
     def fixup_hash
-      return if hash.empty?
+      return if hash.blank?
 
       @hash = hash.transform_keys(&:to_sym)
       expand_paths
     end
 
-    def validate
+    def validate_data
       config_validator.call(hash)
     end
   end
