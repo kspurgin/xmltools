@@ -8,6 +8,9 @@ module Xmltools
         require 'xmltools/cli/commands/validate/directory'
         require 'xmltools/cli/commands/validate/directory_param_contract'
         require 'xmltools/cli/commands/validate/directory_run_contract'
+        require 'xmltools/cli/commands/validate/file'
+        require 'xmltools/cli/commands/validate/file_param_contract'
+        require 'xmltools/cli/commands/validate/file_run_contract'
       end
     end
   end

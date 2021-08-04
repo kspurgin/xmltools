@@ -14,6 +14,7 @@ module Xmltools
       register 'version', Version, aliases: ['v', '-v', '--version']
       register 'validate' do |prefix|
         prefix.register 'directory', Validate::Directory
+        prefix.register 'file', Validate::File
       end
     end
   end
