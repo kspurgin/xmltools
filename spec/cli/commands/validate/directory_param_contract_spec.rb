@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 # rubocop:disable Metrics/BlockLength
-RSpec.describe 'Xmltools::CLI::Commands::ValidateContract' do
-  let(:described_class){ Xmltools::CLI::Commands::ValidateContract }
+RSpec.describe 'Xmltools::CLI::Commands::Validate::DirectoryParamContract' do
+  let(:described_class){ Xmltools::CLI::Commands::Validate::DirectoryParamContract }
   let(:recurse){ false }
 
   # `existing_dir_or_file`, `xml_dir`, and `valid_schema` rule macros are tested under

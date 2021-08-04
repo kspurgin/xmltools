@@ -27,6 +27,12 @@ detectors:
       #   to standard error. They are fine
       - 'RSpec::Support::Helpers#capture_error'
       - 'RSpec::Support::Helpers#capture_output'
+  UncommunicativeVariableName:
+    accept:
+      # rubocop prefers e for rescued errors
+      - e
+      # used calling a block to indicate the variable will not be used
+      - _
   UtilityFunction:
     exclude:
       # These methods live in mix-in modules and are intended to be utility functions!

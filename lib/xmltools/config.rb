@@ -12,7 +12,6 @@ module Xmltools
     include Xmltools::Loggable
     include Xmltools::Validatable
 
-
     def call(hash = {})
       @hash = hash
       fixup_hash
@@ -22,7 +21,7 @@ module Xmltools
     private
 
     attr_reader :hash
-    
+
     def expand_paths
       %i[input_dir schema].each do |key|
         next unless hash.key?(key)
@@ -30,7 +29,7 @@ module Xmltools
         hash[key] = File.expand_path(hash[key])
       end
     end
-    
+
     def fixup_hash
       return if hash.blank?
 

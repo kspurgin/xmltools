@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 # rubocop:disable Metrics/BlockLength
-RSpec.describe 'Xmltools::CLI::Commands::ValidateRunContract' do
-  let(:described_class){ Xmltools::CLI::Commands::ValidateRunContract }
+RSpec.describe 'Xmltools::CLI::Commands::Validate::DirectoryRunContract' do
+  let(:described_class){ Xmltools::CLI::Commands::Validate::DirectoryRunContract }
 
   describe '#call' do
     let(:contract){ described_class.new }

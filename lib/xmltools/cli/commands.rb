@@ -2,10 +2,8 @@
 
 require 'dry/cli'
 
-# require 'xmltools'
-# require 'xmltools/config_loader'
-require 'xmltools/cli/commands/validate'
 require 'xmltools/cli/commands/version'
+require 'xmltools/cli/commands/validate'
 
 module Xmltools
   module CLI
@@ -14,7 +12,9 @@ module Xmltools
       extend Dry::CLI::Registry
 
       register 'version', Version, aliases: ['v', '-v', '--version']
-      register 'validate', Validate
+      register 'validate' do |prefix|
+        prefix.register 'directory', Validate::Directory
+      end
     end
   end
 end

@@ -45,10 +45,8 @@ module Xmltools
       path = files.expand_path(value)
       if recurse
         key.failure('directory contains no XML') unless dir_has_xml_recursive?(path)
-        next
       else
         key.failure('directory contains no XML') unless dir_has_xml_nonrecursive?(path)
-        next
       end
     end
 

@@ -31,8 +31,8 @@ module Xmltools
 
     def schema_doc(path)
       Nokogiri::XML::Schema(xml_files.read(path))
-    rescue Nokogiri::XML::SyntaxError => err
-      raise InvalidSchemaError, err.message
+    rescue Nokogiri::XML::SyntaxError => e
+      raise InvalidSchemaError, e.message
     end
   end
 end

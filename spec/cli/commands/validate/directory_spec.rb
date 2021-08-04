@@ -3,18 +3,18 @@
 require 'spec_helper'
 
 # rubocop:disable Metrics/BlockLength
-RSpec.describe 'Xmltools::CLI::Commands::Validate' do
+RSpec.describe 'Xmltools::CLI::Commands::Validate::Directory' do
   let(:cli){ Dry::CLI.new(Xmltools::CLI::Commands) }
   let(:dirval){ files.join(fixtures_dir, 'xml') }
   let(:schemaval){ files.join(fixtures_dir, 'xsd', 'mods_schema.xsd') }
   let(:recurse){ '--no-recursive' }
   let(:output){ capture_output{ cli.call(arguments: args) } }
-  let(:handling){ "Handling validation options...\n\n" }
-  let(:validating){ "Validating XML\n" }
-  let(:errmsg){ "Cannot validate due to errors:\n" }
+  let(:handling){ "Handling directory validation options...\n\n" }
+  let(:validating){ "Validating XML in directory\n" }
+  let(:errmsg){ "Cannot validate directory due to errors:\n" }
 
-  context 'with validate' do
-    let(:args){ ['validate'] }
+  context 'with validate directory' do
+    let(:args){ %w[validate directory] }
     context 'when no default config' do
       before(:each){ Xmltools.reset_config }
       it 'shows errors and help' do
@@ -33,10 +33,10 @@ RSpec.describe 'Xmltools::CLI::Commands::Validate' do
     end
   end
 
-  context 'with validate --config' do
+  context 'with validate directory --config' do
     before(:all){ config_reset }
     let(:config){ config_file(ok_config_recursive) }
-    let(:args){ ['validate', "--config=#{config}"] }
+    let(:args){ ['validate', 'directory', "--config=#{config}"] }
     it 'changes the application config settings' do
       old_settings = Xmltools.config.values.dup
       cli.call(arguments: args)
@@ -51,7 +51,7 @@ RSpec.describe 'Xmltools::CLI::Commands::Validate' do
   context 'when no value for input_dir set by config' do
     context 'when no value for input_dir passed as param' do
       before(:all){ Xmltools.reset_config }
-      let(:args){ ['validate', "--schema=#{schemaval}", recurse] }
+      let(:args){ ['validate', 'directory', "--schema=#{schemaval}", recurse] }
       it 'outputs errors and help' do
         errs = "  ERROR: input_dir is missing\n"
         expected = "#{handling}#{errmsg}#{errs}"

@@ -49,11 +49,11 @@ module Xmltools
       valid_config = app_config.call(hash)
       Xmltools.setup(valid_config)
     end
-    
+
     def parse_yaml(yaml)
       result = YAML.safe_load(yaml)
-    rescue Psych::SyntaxError => err
-      logger.warn("Invalid config file at #{path}. Cannot parse the YAML because: #{err.message}")
+    rescue Psych::SyntaxError => e
+      logger.warn("Invalid config file at #{path}. Cannot parse the YAML because: #{e.message}")
     else
       @hash = result
     end

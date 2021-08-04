@@ -21,8 +21,10 @@ module Xmltools
   AppContainer.register(:config_validator, ->{ Xmltools::ConfigContract.new })
   AppContainer.namespace('cli') do
     namespace('commands') do
-      register('validate_params_validator', ->{ Xmltools::CLI::Commands::ValidateContract.new })
-      register('validate_run_validator', ->{ Xmltools::CLI::Commands::ValidateRunContract.new })
+      namespace('validate') do
+        register('dir_params_validator', ->{ Xmltools::CLI::Commands::Validate::DirectoryParamContract.new })
+        register('dir_run_validator', ->{ Xmltools::CLI::Commands::Validate::DirectoryRunContract.new })
+      end
     end
   end
 
