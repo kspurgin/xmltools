@@ -32,6 +32,13 @@ RSpec.describe 'Xmltools::Config' do
         expect(result).to eq({recursive: true})
       end
     end
+
+    context 'when config includes extra keys' do
+      let(:configdata){ extra_setting_config }
+      it 'returns hash with valid, populated data' do
+        expect(result.keys).to eq(%i[input_dir])
+      end
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength

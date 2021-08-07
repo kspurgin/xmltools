@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 # rubocop:disable Metrics/BlockLength
-RSpec.describe 'Xmltools::CLI::Commands::Validate::Directory' do
+RSpec.describe 'Xmltools::CLI::Commands::XpathReport::Directory' do
   let(:cli){ Dry::CLI.new(Xmltools::CLI::Commands) }
   let(:dirval){ files.join(fixtures_dir, 'xml') }
   let(:schemaval){ files.join(fixtures_dir, 'xsd', 'mods_schema.xsd') }

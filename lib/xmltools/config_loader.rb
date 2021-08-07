@@ -18,6 +18,7 @@ module Xmltools
     DEFAULT_FILE = File.join(XMLTOOLS_HOME, DOTFILE)
 
     def call(config_path = DEFAULT_FILE)
+      logger.info('Reloading config')
       @hash = {}
       @path = File.expand_path(config_path)
       load_config

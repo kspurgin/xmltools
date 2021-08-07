@@ -34,6 +34,7 @@ module Xmltools
       return if hash.blank?
 
       @hash = hash.transform_keys(&:to_sym)
+                  .select{ |setting, _| Xmltools.known_settings.any?(setting) }
       expand_paths
     end
 

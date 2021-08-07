@@ -6,5 +6,5 @@ require 'xmltools'
 require 'xmltools/cli/commands'
 
 # Load any default config values so we don't have to treat them as required params
-Xmltools::ConfigLoader.new
+Xmltools::ConfigLoader.new.call
 Dry::CLI.new(Xmltools::CLI::Commands).call

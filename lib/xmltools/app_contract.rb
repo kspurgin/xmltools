@@ -3,14 +3,34 @@
 require 'pathname'
 require 'dry-validation'
 
-# require 'xmltools'
+require 'xmltools/loggable'
 require 'xmltools/xml'
 
 module Xmltools
   # Common validation macros shared across the application
-  # Specific contracts using these macros inherit from this class
+  #
+  # Specific contracts that use these macros are subclasses of this class
   class AppContract < Dry::Validation::Contract
+    include Loggable
     include Xml
+
+    register_macro(:can_create_file) do
+      next if value.blank?
+
+      path = files.expand_path(value)
+      next if files.exist?(path) && File.writable?(path)
+
+      if files.exist?(path) && !File.writable?(path)
+        key.failure("Cannot write to #{key_name}: #{values.data[key_name]}")
+        next
+      end
+
+      begin
+        files.touch(path)
+      rescue Dry::Files::Error
+        key.failure("Cannot write to #{key_name}: #{values.data[key_name]}")
+      end
+    end
 
     register_macro(:existing_dir_or_file) do
       next if value.blank?
@@ -31,6 +51,16 @@ module Xmltools
         schema_doc(value)
       rescue Xmltools::Xml::InvalidSchemaError
         key.failure("invalid schema at #{value}")
+      end
+    end
+
+    register_macro(:valid_xpath) do
+      next if value.blank?
+
+      begin
+        test_doc.xpath(value)
+      rescue Nokogiri::XML::XPath::SyntaxError
+        key.failure("#{value} is invalid xpath")
       end
     end
 

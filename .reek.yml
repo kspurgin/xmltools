@@ -40,6 +40,7 @@ detectors:
       - 'Xmltools::Validatable#valid_data'
       - 'Xmltools::Xml#dir_has_xml_nonrecursive?'
       - 'Xmltools::Xml#dir_has_xml_recursive?'
+      - 'Xmltools::Xml#test_doc'
 directories:
   'spec/**':
     # Don't spend time writing documentation for dummy classes set up for testing

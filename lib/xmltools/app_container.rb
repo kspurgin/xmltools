@@ -27,6 +27,10 @@ module Xmltools
         register('file_params_validator', ->{ Xmltools::CLI::Commands::Validate::FileParamContract.new })
         register('file_run_validator', ->{ Xmltools::CLI::Commands::Validate::FileRunContract.new })
       end
+      namespace('xpath_report') do
+        register('dir_params_validator', ->{ Xmltools::CLI::Commands::XpathReport::DirectoryParamContract.new })
+        register('dir_run_validator', ->{ Xmltools::CLI::Commands::XpathReport::DirectoryRunContract.new })
+      end
     end
   end
 

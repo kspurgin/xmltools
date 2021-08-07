@@ -25,10 +25,17 @@ module Xmltools
   setting :input_dir, reader: true
   setting :schema, reader: true
   setting :recursive, reader: true
+  setting :report_path, reader: true
+  setting :xpath, reader: true
 
   # Require application files
   Dir.glob("#{__dir__}/**/*").sort.select{ |path| path.match?(/\.rb$/) }.each do |rbfile|
     require rbfile.delete_prefix("#{File.expand_path(__dir__)}/lib/")
+  end
+
+  # Return list of configured settings
+  def self.known_settings
+    config.values.keys
   end
 
   # Update configuration settings from given hash

@@ -12,6 +12,8 @@ module Xmltools
       optional(:input_dir).value(:string)
       optional(:schema).value(:string)
       optional(:recursive).value(:bool)
+      optional(:report_path).value(:string)
+      optional(:xpath).value(:string)
     end
 
     rule(:input_dir).validate(:existing_dir_or_file)
@@ -19,5 +21,9 @@ module Xmltools
 
     rule(:schema).validate(:existing_dir_or_file)
     rule(:schema).validate(:valid_schema)
+
+    rule(:report_path).validate(:can_create_file)
+
+    rule(:xpath).validate(:valid_xpath)
   end
 end

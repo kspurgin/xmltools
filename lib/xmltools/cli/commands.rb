@@ -4,6 +4,7 @@ require 'dry/cli'
 
 require 'xmltools/cli/commands/version'
 require 'xmltools/cli/commands/validate'
+require 'xmltools/cli/commands/xpath_report'
 
 module Xmltools
   module CLI
@@ -15,6 +16,9 @@ module Xmltools
       register 'validate' do |prefix|
         prefix.register 'directory', Validate::Directory
         prefix.register 'file', Validate::File
+      end
+      register 'xpath_report' do |prefix|
+        prefix.register 'directory', XpathReport::Directory
       end
     end
   end

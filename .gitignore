@@ -1,8 +1,10 @@
 /.bundle/
 /.yardoc
 /_yardoc/
+/.yardopts
 /coverage/
 /doc/
+/docs/
 /pkg/
 /spec/reports/
 /spec/support/fixtures/configs/config.yml

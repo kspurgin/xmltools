@@ -1,3 +1,5 @@
-input_dir: ~/data/islandora/mods/i7_mods/uncsa_clean
+input_dir: ~/data/islandora/mods/osl_altRepGroup_project/orig
+xpath: //*[@script and not(@altRepGroup)]
+report_path: ~/data/islandora/mods/osl_altRepGroup_project/script_attr_report
 recursive: false
 schema: ~/data/mods/mods-3-6.xsd

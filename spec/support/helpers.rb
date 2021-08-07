@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'support/fixtures/configs'
+
 module RSpec
   module Support
     # Methods to support testing
@@ -38,6 +40,17 @@ module RSpec
         path.sub(%r{^.*/xmltools}, '/xmltools')
       end
 
+      # Compares key/values present in given hash against the values of those settings in Xmltools.config.
+      #   Does not require the given hash to include all settings available in Xmltools.config in order to
+      #   return true.
+      # @return [TrueClass] if values for the settings match
+      def compare_config(hash)
+        hash.each do |setting, value|
+          return false unless Xmltools.send(setting) == value
+        end
+        true
+      end
+
       def config_file(config)
         path = files.join(fixtures_dir, 'configs', 'config.yml')
         return path if files.exist?(path) && files.read(path) == config
@@ -55,44 +68,6 @@ module RSpec
       def fixtures_dir
         home = File.realpath(File.join(File.dirname(__FILE__), '..', '..'))
         File.join(home, 'spec', 'support', 'fixtures')
-      end
-
-      def invalid_schema_config
-        <<~CONFIG
-          input_dir: #{files.join(fixtures_dir, 'xml')}
-          recursive: false
-          schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema_invalid.xsd')}
-        CONFIG
-      end
-
-      def ok_config
-        <<~CONFIG
-          input_dir: #{files.join(fixtures_dir, 'xml')}
-          recursive: false
-          schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema.xsd')}
-        CONFIG
-      end
-
-      def ok_config_recursive
-        <<~CONFIG
-          input_dir: #{files.join(fixtures_dir, 'xml2')}
-          recursive: true
-          schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema2.xsd')}
-        CONFIG
-      end
-
-      def ok_tmp_config
-        <<~CONFIG
-          input_dir: #{files.join(fixtures_dir, 'tmpxml')}
-          recursive: false
-          schema: #{files.join(fixtures_dir, 'xsd', 'mods_schema.xsd')}
-        CONFIG
-      end
-
-      def only_recursive_config
-        <<~CONFIG
-          recursive: true
-        CONFIG
       end
     end
   end
