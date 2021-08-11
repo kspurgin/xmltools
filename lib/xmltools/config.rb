@@ -23,7 +23,7 @@ module Xmltools
     attr_reader :hash
 
     def expand_paths
-      %i[input_dir schema].each do |key|
+      %i[input_dir report_path schema].each do |key|
         next unless hash.key?(key)
 
         hash[key] = File.expand_path(hash[key])
