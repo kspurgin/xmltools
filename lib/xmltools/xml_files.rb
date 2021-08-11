@@ -2,11 +2,9 @@
 
 require 'pathname'
 
-require 'xmltools'
-
 module Xmltools
   # Returns Pathnames of XML files in a given directory
-  class XmlDirectory
+  class XmlFiles
     def call
       @path = Pathname.new(Xmltools.input_dir)
       Xmltools.recursive ? recursive_files : files

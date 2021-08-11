@@ -15,7 +15,7 @@ module Xmltools
   AppContainer.register(:app_config, ->{ Xmltools::Config.new })
   AppContainer.register(:config_loader, ->{ Xmltools::ConfigLoader.new })
   AppContainer.register(:manage_xml_validation, ->{ ManageXmlValidation.new })
-  AppContainer.register(:xml_input, ->{ Xmltools::XmlDirectory.new })
+  AppContainer.register(:xml_input, ->{ Xmltools::XmlFiles.new })
 
   # validation contracts
   AppContainer.register(:config_validator, ->{ Xmltools::ConfigContract.new })

@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 # rubocop:disable Metrics/BlockLength
-RSpec.describe 'Xmltools::XmlDirectory' do
-  let(:dir){ Xmltools::XmlDirectory.new }
+RSpec.describe 'Xmltools::XmlFiles' do
+  let(:dir){ Xmltools::XmlFiles.new }
 
   describe 'call' do
     context 'when not recursive' do
